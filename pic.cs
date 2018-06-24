@@ -86,5 +86,13 @@ class pic_hit{
         return agree;
     }
 
+    //‰æ‘œ‚ğæ“¾‚µ‚ÄQÆ‚µ‚½pic_data_class.Pic_data‚É“n‚·
+    public void pic_get(pic_data_class obj){
+        obj.Pic_data = new Bitmap( obj.Pic_Width, obj.Pic_Height);
+        Graphics g = Graphics.FromImage(obj.Pic_data);
+        g.CopyFromScreen( new Point( obj.Pic_X , obj.Pic_Y), new Point( 0, 0),  obj.Pic_dat.Size);
+        g.Dispose();
+    }
+
 }
 

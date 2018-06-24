@@ -43,6 +43,7 @@ partial class form{
     }
 
     //str1 がなければ str2 をクリックする
+    //画像が見つからない場合、エラーフラグを立てる
     void a_non_b_click(string str1,string str2){
         pic_data_class tmp_class1,tmp_class2;
         
@@ -54,12 +55,31 @@ partial class form{
             return;
         }
 
-        for(int cnt = 0; cnt <= 1000; cnt++){
+        for(int cnt = 0; cnt <= 200; cnt++){
             if(p_hit.pic_con(tmp_class1))return;
             mouse.before_move_and_click(tmp_class2);
         }
+        logwrite("error:" + tmp_class1.Name + "の画像が見つかりません")
         stop_flg = true;
     }
 
+    //str1 をクリック
+    void a_click(string str1){
+        pic_data_class tmp_class;
+        tmp_class = search_class(str1);
+        mouse.before_move_and_click(tmp_class);
+    }
+
+    //str1 & str2 の箇所が変化するまで str3 をクリック
+    void a_b_change_c_click(string str1, string str2, string str3){
+        pic_get(str1);
+        pic_get(str2);
+        for(int i = 0; i <= 200; i++){
+            a_click(str3);
+            if(!(pic_con(str1)) || !(pic_con(str2)))return;
+        }
+        logwrite("error:画面が変化しません");
+        stop_flg = true;
+    }
 
 }
