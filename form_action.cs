@@ -26,7 +26,7 @@ partial class form{
         if(flg){
             logwrite(str + "‚Ì‰æ‘œ‚ªˆê’v‚µ‚Ü‚µ‚½");
         }else{
-            logwrite(str + "‚Ì‰æ‘œ‚Íˆê’v‚µ‚Ü‚¹‚ñ")
+            logwrite(str + "‚Ì‰æ‘œ‚Íˆê’v‚µ‚Ü‚¹‚ñ");
         }
         return flg;
     }
@@ -37,11 +37,12 @@ partial class form{
         if(flg){
             logwrite(str + "‚Ì‰æ‘œ‚ð”­Œ©‚µ‚Ü‚µ‚½");
         }else{
-            logwrite(str + "‚Ì‰æ‘œ‚Í”­Œ©‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½")
+            logwrite(str + "‚Ì‰æ‘œ‚Í”­Œ©‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½");
         }
         return flg;
     }
 
+    //str1 ‚ª‚È‚¯‚ê‚Î str2 ‚ðƒNƒŠƒbƒN‚·‚é
     void a_non_b_click(string str1,string str2){
         pic_data_class tmp_class1,tmp_class2;
         

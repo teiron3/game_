@@ -7,5 +7,6 @@ partial class form{
     //•â‹‹
     void supply(int i){
         a_non_b_click("•ê`_oŒ‚", "•ê`_•ê`");
+        a_non_b_click("•ê`_•ê`", "•ê`_•â‹‹");
     }
 }

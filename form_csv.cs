@@ -25,7 +25,7 @@ partial class form{
         string file_path = csv_file;
         if(!System.IO.File.Exists(file_path)) {
             logwrite_msgbox("error:設定用のcsvファイルがありません");
-            stop_flg = trure;
+            stop_flg = true;
             return false;
         }
 
@@ -56,7 +56,7 @@ partial class form{
                 else
                     logwrite("error:" + p_class[i].Name + "のbmpファイルがありません");
                     flg = false;
-                    stop_flg = trure;
+                    stop_flg = true;
             }
             this.rows++;
         }

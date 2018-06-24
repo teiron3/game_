@@ -6,7 +6,7 @@ using System.Linq;
 
 class pic_hit{
     /* 引数 obj に記録された bmpデータ が指定の場所にあればtrueを返す */
-    public static bool pic_con(pic_data_class obj){
+    public bool pic_con(pic_data_class obj){
         //引数の obj が null の場合、false を返す
         if(obj == null)return false;
 
@@ -35,7 +35,7 @@ class pic_hit{
     }
 
     /* 引数 obj に記録されたbmpデータが指定の範囲にあればtrueを返す */
-    public static bool pic_search(pic_data_class obj){
+    public bool pic_search(pic_data_class obj){
         //引数の obj が null の場合、false を返す
         if(obj == null)return false;
         
