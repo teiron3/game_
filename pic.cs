@@ -90,7 +90,7 @@ class pic_hit{
     public void pic_get(pic_data_class obj){
         obj.Pic_data = new Bitmap( obj.Pic_Width, obj.Pic_Height);
         Graphics g = Graphics.FromImage(obj.Pic_data);
-        g.CopyFromScreen( new Point( obj.Pic_X , obj.Pic_Y), new Point( 0, 0),  obj.Pic_dat.Size);
+        g.CopyFromScreen( new Point( obj.Pic_X , obj.Pic_Y), new Point( 0, 0),  obj.Pic_data.Size);
         g.Dispose();
     }
 

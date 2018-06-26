@@ -59,7 +59,7 @@ partial class form{
             if(p_hit.pic_con(tmp_class1))return;
             mouse.before_move_and_click(tmp_class2);
         }
-        logwrite("error:" + tmp_class1.Name + "‚Ì‰æ‘œ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ")
+        logwrite("error:" + tmp_class1.Name + "‚Ì‰æ‘œ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
         stop_flg = true;
     }
 
@@ -72,8 +72,11 @@ partial class form{
 
     //str1 & str2 ‚Ì‰ÓŠ‚ª•Ï‰»‚·‚é‚Ü‚Å str3 ‚ğƒNƒŠƒbƒN
     void a_b_change_c_click(string str1, string str2, string str3){
-        pic_get(str1);
-        pic_get(str2);
+
+        pic_data_class tmp_class1 = search_class(str1);
+        pic_data_class tmp_class2 = search_class(str2);
+        p_hit.pic_get(tmp_class1);
+        p_hit.pic_get(tmp_class2) ;
         for(int i = 0; i <= 200; i++){
             a_click(str3);
             if(!(pic_con(str1)) || !(pic_con(str2)))return;

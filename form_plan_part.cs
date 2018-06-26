@@ -5,9 +5,9 @@ using System.Drawing.Imaging;
 
 partial class form{
     //補給
-    void supply(int f){
+    void supply(byte f){
         //引数チェック適正な値でない場合はエラーを返す
-        if(f & 15 = 0){
+        if((f & 15) == 0){
             logwrite_msgbox("error:補給の引数エラー");
             stop_flg = true;
             return;
@@ -26,14 +26,14 @@ partial class form{
         };
 
         //1艦隊の補給
-        if(f & 8 != 0){
+        if((f & 8) != 0){
             run_supplay();
             home_port_return();
             return;
         }
 
         //2艦隊の補給
-        if(f & 4 != 0){
+        if((f & 4) != 0){
             a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択2");
             if(stop_flg)return;
 
@@ -44,7 +44,7 @@ partial class form{
 
 
         //3艦隊の補給
-        if(f & 2 != 0){
+        if((f & 2) != 0){
             a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択3");
             if(stop_flg)return;
 
@@ -54,7 +54,7 @@ partial class form{
         }
 
         //4艦隊の補給
-        if(f & 1 != 0){
+        if((f & 1) != 0){
             a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択4");
             if(stop_flg)return;
 
