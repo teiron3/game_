@@ -47,11 +47,11 @@ partial class form : Form{
 
         rbtn3.Parent = this;
         rbtn3.Location = new Point(15, 60);
-        rbtn3.Text = "test2";
+        rbtn3.Text = "test4";
 
         rbtn4.Parent = this;
         rbtn4.Location = new Point(15, 80);
-        rbtn4.Text = "test2";
+        rbtn4.Text = "test5";
     }
 
     //ƒCƒxƒ“ƒg‚Ìİ’è
