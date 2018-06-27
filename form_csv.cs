@@ -31,10 +31,12 @@ partial class form{
 
         System.IO.StreamReader text_strm = new System.IO.StreamReader(file_path, System.Text.Encoding.GetEncoding("shift_jis"));
         while(text_strm.Peek() >= 0){
+            string s = text_strm.ReadLine();
+            //コメントアウト # の処理
+            if(s.StartsWith("#"))continue;
             int i = this.rows;
             this.p_class[i] = new pic_data_class();
             string[] test_str;
-            string s = text_strm.ReadLine();
             test_str = s.Split(',');
             
             this.p_class[i].Name = test_str[0];
