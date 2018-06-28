@@ -4,32 +4,36 @@ using System.Drawing;
 using System.Drawing.Imaging;
 
 partial class form{
-    //•â‹‹
+    //ƒƒ\ƒbƒh supply •ê`‰æ–Ê‚©‚ç‚Ì•â‹‹
+    //ˆø” b :4bit‚Å‚»‚ê‚¼‚ê‚ÌŠÍ‘à‚ğ‘I‘ğ‚·‚é
+    //        0b0000 ‚Å 1234 ‚Ì‡”Ô
     void supply(byte f){
-        //ˆø”ƒ`ƒFƒbƒN“K³‚È’l‚Å‚È‚¢ê‡‚ÍƒGƒ‰[‚ğ•Ô‚·
+        //ˆø”ƒ`ƒFƒbƒN“K³‚È’l‚Å‚È‚¢ê‡‚ÍƒGƒ‰[‚ğ•Ô‚µ‚Ä“®ìI—¹
         if((f & 15) == 0){
-            logwrite_msgbox("error:•â‹‹‚Ìˆø”ƒGƒ‰[");
+            logwrite_msgbox("error:supply ˆø”ƒGƒ‰[");
             stop_flg = true;
             return;
         }
 
-        //•ê`‰æ–Ê‚É–ß‚é
+        //delegate •ê`‰æ–Ê‚É–ß‚é
         Action home_port_return = () =>{
             a_non_b_click("•ê`_oŒ‚", "ƒƒjƒ…[_•ê`");
         };
-        a_non_b_click("•ê`_oŒ‚", "•ê`_•ê`"); if(stop_flg)return;
-        a_non_b_click("•ê`_”R—¿", "•ê`_•â‹‹"); if(stop_flg)return;
 
-        //•â‹‹À{
+        //deligate •â‹‹À{
         Action run_supplay = () =>{
             for(int i = 0; i >= 2; i++)a_click("•â‹‹_‘S•â‹‹");
         };
 
+        //“®ìŠJn
+        //•ê`‚©‚ç•â‹‹‰æ–Ê‚É‘JˆÚ
+        a_non_b_click("•ê`_oŒ‚", "•ê`_•ê`"); if(stop_flg)return;
+        a_non_b_click("•ê`_”R—¿", "•ê`_•â‹‹"); if(stop_flg)return;
+
         //1ŠÍ‘à‚Ì•â‹‹
         if((f & 8) != 0){
             run_supplay();
-            home_port_return();
-            return;
+            if(stop_flg)return;
         }
 
         //2ŠÍ‘à‚Ì•â‹‹
@@ -38,10 +42,8 @@ partial class form{
             if(stop_flg)return;
 
             run_supplay();
-            home_port_return();
             if(stop_flg)return;
         }
-
 
         //3ŠÍ‘à‚Ì•â‹‹
         if((f & 2) != 0){
@@ -49,7 +51,6 @@ partial class form{
             if(stop_flg)return;
 
             run_supplay();
-            home_port_return(); 
             if(stop_flg)return;
         }
 
@@ -59,9 +60,10 @@ partial class form{
             if(stop_flg)return;
 
             run_supplay();
-            home_port_return();
             if(stop_flg)return;
         }
 
+            home_port_return();
+            return;
     }
 }

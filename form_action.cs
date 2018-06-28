@@ -81,7 +81,7 @@ partial class form{
             a_click(str3);
             if(!(pic_con(str1)) || !(pic_con(str2)))return;
         }
-        logwrite("error:‰æ–Ê‚ª•Ï‰»‚µ‚Ü‚¹‚ñ");
+        logwrite("error:a_b_change_c_click3 ‰æ–Ê‚ª•Ï‰»‚µ‚Ü‚¹‚ñ");
         stop_flg = true;
     }
 
