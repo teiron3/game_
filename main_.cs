@@ -4,6 +4,7 @@ using System.Windows.Forms;
 
 class main{
     static void Main(){
+        new handmade.operation_window();
         form fm = new form();
         bool flg = false;
 

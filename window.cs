@@ -3,8 +3,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 //ウィンドウ操作クラス
-public class operation_windows
-{
+namespace handmade{
+    
+public class operation_window{
     IntPtr temp;
     /// <summary>
     /// エントリポイント
@@ -13,8 +14,7 @@ public class operation_windows
     {
         //ウィンドウを列挙する
         EnumWindows(new EnumWindowsDelegate(EnumWindowCallBack), IntPtr.Zero);
-
-        Console.ReadLine();
+        Console.WriteLine("test");
     }
 
     public delegate bool EnumWindowsDelegate(IntPtr hWnd, IntPtr lparam);
@@ -35,32 +35,6 @@ public class operation_windows
     private static extern int GetClassName(IntPtr hWnd,
         StringBuilder lpClassName, int nMaxCount);
 
-    private static bool EnumWindowCallBack(IntPtr hWnd, IntPtr lparam)
-    {
-        //ウィンドウのタイトルの長さを取得する
-        int textLen = GetWindowTextLength(hWnd);
-        if (0 < textLen)
-        {
-            //ウィンドウのタイトルを取得する
-            StringBuilder tsb = new StringBuilder(textLen + 1);
-            GetWindowText(hWnd, tsb, tsb.Capacity);
-
-            //ウィンドウのクラス名を取得する
-            //StringBuilder csb = new StringBuilder(256);
-            //GetClassName(hWnd, csb, csb.Capacity);
-            
-            if(tsb.ToString().IndexOf("メモ帳") >= 0){
-                MoveWindow(hWnd, 0, 10, 300, 200, 1);
-            }
-            //結果を表示する
-            //Console.WriteLine("クラス名:" + csb.ToString());
-            //Console.WriteLine("タイトル:" + tsb.ToString());
-        }
-
-        //すべてのウィンドウを列挙する
-        return true;
-    }
-
     //ウィンドウ操作用外部メソッド
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern int MoveWindow(
@@ -68,4 +42,27 @@ public class operation_windows
         int nWidth,int nHeight, int bRepaint
     );
 
+    private static bool EnumWindowCallBack(IntPtr hWnd, IntPtr lparam)
+    {
+        //ウィンドウのタイトルの長さを取得する
+        int textLen = GetWindowTextLength(hWnd);
+        if (0 < textLen) {
+            //ウィンドウのタイトルを取得する
+            StringBuilder tsb = new StringBuilder(textLen + 1);
+            GetWindowText(hWnd, tsb, tsb.Capacity);
+
+            //対象のウィンドウを位置と大きさを設定する
+            if(tsb.ToString().IndexOf("メモ帳") >= 0){
+                MoveWindow(hWnd, 0, 10, 300, 200, 1);
+                return true;
+            }
+            //結果を表示する
+            //Console.WriteLine("タイトル:" + tsb.ToString());
+        }
+
+        //すべてのウィンドウを列挙する
+        return true;
+    }
+
+}
 }
