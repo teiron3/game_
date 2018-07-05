@@ -4,7 +4,10 @@ using System.Windows.Forms;
 
 class main{
     static void Main(){
+        //ウィンドウ位置修正
         new handmade.operation_window();
+
+        //form クラス作成
         form fm = new form();
         bool flg = false;
 
@@ -24,13 +27,12 @@ class main{
         }
 
         if(flg){
-            fm.logwrite_msgbox("errorのため終了します");
+            fm.logwrite_msgbox("error:開始処理errorのため終了します");
             return;
         }
 
         Application.Run(fm);
 
         fm.logwrite("アプリケーション終了");
-
     }
 }

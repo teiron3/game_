@@ -11,6 +11,7 @@ partial class form : Form{
     //要素のクラス宣言とインスタンス化
     Button btn1 = new Button();
     Button btn2 = new Button();
+    Button btn3 = new Button();
     RadioButton rbtn1 = new RadioButton();
     RadioButton rbtn2 = new RadioButton();
     RadioButton rbtn3 = new RadioButton();
@@ -21,7 +22,7 @@ partial class form : Form{
         // formの大きさとタイトルを設定
         this.Text = "game manupirate";
         this.Width = 200;
-        this.Height = 300;
+        this.Height = 400;
 
         //各種要素を設定
 
@@ -35,6 +36,11 @@ partial class form : Form{
         btn2.Location = new Point(50, 190);
         btn2.Text = "停止ボタン";
         btn2.Click += new EventHandler(btn2_end_key);
+
+        btn3.Parent = this;
+        btn3.Location = new Point(50, 230);
+        btn3.Text = "ウィンドウ位置修正";
+        btn3.Click += new EventHandler(btn3_window);
 
         //ラジオボタン
         rbtn1.Parent = this;
@@ -83,4 +89,11 @@ partial class form : Form{
         btn2.Text = "停止処理中";
         this.stop_flg = true;
     }
+
+    //ウインドウ位置の修正処理発動ボタンイベント
+    void btn3_window(object sender, EventArgs e){
+        new homemade.operation_window();
+    }
+    
+    
 }
