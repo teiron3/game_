@@ -92,7 +92,7 @@ partial class form : Form{
 
     //ウインドウ位置の修正処理発動ボタンイベント
     void btn3_window(object sender, EventArgs e){
-        new homemade.operation_window();
+        new handmade.operation_window();
     }
     
     
