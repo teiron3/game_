@@ -52,8 +52,12 @@ public class operation_window{
             GetWindowText(hWnd, tsb, tsb.Capacity);
 
             //対象のウィンドウを位置と大きさを設定する
-            if(tsb.ToString().IndexOf("メモ帳") >= 0){
-                MoveWindow(hWnd, 0, 10, 300, 200, 1);
+            if(tsb.ToString().IndexOf("ブラウザ") >= 0){
+                MoveWindow(hWnd, 0, 0, 300, 200, 1);
+                return true;
+            }
+            if(tsb.ToString().IndexOf("入渠") >= 0){
+                MoveWindow(hWnd, 200, 0, 300, 200, 1);
                 return true;
             }
             //結果を表示する
