@@ -2,16 +2,14 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Collections.Generic;
 
 partial class form{
-    // csvファイルのデータを格納するデータ型クラス宣言
-    public pic_data_class[] p_class;
+    // csvファイルのデータを格納する Dictionary クラスを宣言
+    public Dictionary<string, pic_data_class> p_class;
 
     // csvファイル名の設定
     public string csv_file{get{return "csv_file.csv";}}
-
-    // データの数(csvファイルの行数)設定 
-    public int rows = 0;
 
     //csvファイルを読み込んでデータ型クラスに入れるメソッド
     //正常読み込みできなかったときに false を返す 
@@ -19,8 +17,6 @@ partial class form{
 
         //正常に読み込みできたかどうかを判定用
         bool flg = true;
-        this.rows = 0;
-        this.p_class = new pic_data_class[100];
 
         string file_path = csv_file;
         if(!System.IO.File.Exists(file_path)) {
@@ -34,36 +30,35 @@ partial class form{
             string s = text_strm.ReadLine();
             //コメントアウト # の処理
             if(s.StartsWith("#"))continue;
-            int i = this.rows;
-            this.p_class[i] = new pic_data_class();
             string[] test_str;
             test_str = s.Split(',');
             
-            this.p_class[i].Name = test_str[0];
-            if(test_str.Length >= 2) this.p_class[i].Set_Necessity = test_str[1];
-            if(test_str.Length >= 3) this.p_class[i].X = int.Parse(test_str[2]);
-            if(test_str.Length >= 4) this.p_class[i].Y = int.Parse(test_str[3]);
-            if(test_str.Length >= 5) this.p_class[i].Width = int.Parse(test_str[4]);
-            if(test_str.Length >= 6) this.p_class[i].Height = int.Parse(test_str[5]);
-            if(test_str.Length >= 7) this.p_class[i].Pic_X = int.Parse(test_str[6]);
-            if(test_str.Length >= 8) this.p_class[i].Pic_Y = int.Parse(test_str[7]);
-            if(test_str.Length >= 9) this.p_class[i].Pic_Width = int.Parse(test_str[8]);
-            if(test_str.Length >= 10) this.p_class[i].Pic_Height = int.Parse(test_str[9]);
-            if(test_str.Length >= 11) this.p_class[i].Pic_CreateDate = test_str[10];
+            p_class.Add(test_str[0], new pic_data_class());
+            var tmp = p_class[test_str[0]];
             
-            if(p_class[i].Necessity == true)
+            tmp.Name = test_str[0];
+            if(test_str.Length >= 2) tmp.Set_Necessity = test_str[1];
+            if(test_str.Length >= 3) tmp.X = int.Parse(test_str[2]);
+            if(test_str.Length >= 4) tmp.Y = int.Parse(test_str[3]);
+            if(test_str.Length >= 5) tmp.Width = int.Parse(test_str[4]);
+            if(test_str.Length >= 6) tmp.Height = int.Parse(test_str[5]);
+            if(test_str.Length >= 7) tmp.Pic_X = int.Parse(test_str[6]);
+            if(test_str.Length >= 8) tmp.Pic_Y = int.Parse(test_str[7]);
+            if(test_str.Length >= 9) tmp.Pic_Width = int.Parse(test_str[8]);
+            if(test_str.Length >= 10) tmp.Pic_Height = int.Parse(test_str[9]);
+            if(test_str.Length >= 11) tmp.Pic_CreateDate = test_str[10];
+            
+            if(tmp.Necessity == true)
             {
-                if(System.IO.File.Exists(p_class[i].Address))
-                    this.p_class[i].Pic_data = new Bitmap(p_class[i].Address);
+                if(System.IO.File.Exists(tmp.Address))
+                    tmp.Pic_data = new Bitmap(tmp.Address);
                 else
-                    logwrite("error:" + p_class[i].Name + "のbmpファイルがありません");
+                    logwrite("error:" + tmp.Name + "のbmpファイルがありません");
                     flg = false;
                     stop_flg = true;
             }
-            this.rows++;
         }
 
-        this.rows = this.rows - 1;
         text_strm.Close();
         return flg;
     }
