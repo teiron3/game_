@@ -53,7 +53,7 @@ public class operation_window{
 
             //対象のウィンドウを位置と大きさを設定する
             if(tsb.ToString().IndexOf("ブラウザ") >= 0){
-                MoveWindow(hWnd, 0, 0, 300, 200, 1);
+                MoveWindow(hWnd, 0, 0, 700, 580, 1);
                 return true;
             }
             if(tsb.ToString().IndexOf("入渠") >= 0){
