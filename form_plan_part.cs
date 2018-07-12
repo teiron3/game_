@@ -17,7 +17,7 @@ partial class form{
 
         //delegate •ê`‰æ–Ê‚É–ß‚é
         Action home_port_return = () =>{
-            a_non_b_click("•ê`_oŒ‚", "ƒƒjƒ…[_•ê`");
+            a_non_b_click("•ê`_oŒ‚", "•ê`_•ê`");
         };
 
         //deligate •â‹‹À{
@@ -28,7 +28,7 @@ partial class form{
         //“®ìŠJn
         //•ê`‚©‚ç•â‹‹‰æ–Ê‚É‘JˆÚ
         a_non_b_click("•ê`_oŒ‚", "•ê`_•ê`"); if(stop_flg)return;
-        a_non_b_click("•ê`_”R—¿", "•ê`_•â‹‹"); if(stop_flg)return;
+        a_non_b_click("•â‹‹_”R—¿", "•ê`_•â‹‹"); if(stop_flg)return;
 
         //1ŠÍ‘à‚Ì•â‹‹
         if((f & 8) != 0){
