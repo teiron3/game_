@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 partial class form{
     // csvファイルのデータを格納する Dictionary クラスを宣言
-    public Dictionary<string, pic_data_class> p_class;
+    public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
 
     // csvファイル名の設定
     public string csv_file{get{return "csv_file.csv";}}
