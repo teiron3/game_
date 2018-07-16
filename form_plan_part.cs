@@ -8,6 +8,7 @@ partial class form{
     //引数 b :4bitでそれぞれの艦隊を選択する
     //        0b0000 で 1234 の順番
     void supply(byte f){
+        logwrite("test11");
         //引数チェック適正な値でない場合はエラーを返して動作終了
         if((f & 15) == 0){
             logwrite_msgbox("error:supply 引数エラー");
@@ -22,7 +23,7 @@ partial class form{
 
         //deligate 補給実施
         Action run_supplay = () =>{
-            for(int i = 0; i >= 2; i++)a_click("補給_全補給");
+            for(int i = 0; i <= 2; i++)a_click("補給_全補給");
         };
 
         //動作開始
@@ -64,6 +65,7 @@ partial class form{
         }
 
             home_port_return();
+            logwrite("補給完了");
             return;
     }
 }

@@ -52,10 +52,11 @@ partial class form{
             {
                 if(System.IO.File.Exists(tmp.Address))
                     tmp.Pic_data = new Bitmap(tmp.Address);
-                else
+                else{
                     logwrite("error:" + tmp.Name + "‚Ìbmpƒtƒ@ƒCƒ‹‚ª‚ ‚è‚Ü‚¹‚ñ");
                     flg = false;
                     stop_flg = true;
+                }
             }
         }
 

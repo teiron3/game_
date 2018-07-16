@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 // form の形状とイベントを記載
 partial class form : Form{
@@ -63,11 +64,12 @@ partial class form : Form{
     //イベントの設定
     //btn1 のイベント(action start)
     void btn1_action_start(object sender, EventArgs e){
-        /*
         if(rbtn1.Checked == true){
-            Task.Run(()=> testmeso(this.x));
+            Task.Run(()=> supply((byte)15));
             return;
         }
+
+        /*
         if(rbtn2.Checked == true){
             Task.Run(()=> testmeso(this.x));
             return;

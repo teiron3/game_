@@ -23,7 +23,10 @@ class main{
         }
         //設定用csvファイルが正常に読み込めなったときに終了フラグを立てる
         else{
-            if(!fm.read_csv())flg = true;
+            if(!fm.read_csv()){
+                fm.logwrite("csvファイルが正常に読み込めませんでした");
+                flg = true;
+            }
         }
 
         if(flg){
