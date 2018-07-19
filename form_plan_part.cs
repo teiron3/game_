@@ -8,7 +8,6 @@ partial class form{
     //引数 b :4bitでそれぞれの艦隊を選択する
     //        0b0000 で 1234 の順番
     void supply(byte f){
-        logwrite("test11");
         //引数チェック適正な値でない場合はエラーを返して動作終了
         if((f & 15) == 0){
             logwrite_msgbox("error:supply 引数エラー");
@@ -67,5 +66,21 @@ partial class form{
             home_port_return();
             logwrite("補給完了");
             return;
+    }
+
+    void Fielde1_1(){
+        //delegate 母港画面に戻る
+        Action home_port_return = () =>{
+            a_non_b_click("母港_出撃", "母港_母港");
+        };
+
+        //動作開始
+        //母港から出撃画面に遷移
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
+        a_non_b_click("出撃_出撃", "母港_出撃"); if(stop_flg)return;
+        a_non_b_click("出撃海域_1", "出撃_出撃"); if(stop_flg)return;
+        a_non_b_click("出撃決定_海域決定", "出撃海域詳細_1"); if(stop_flg)return;
+        a_non_b_click("出撃決定_出撃決定", "出撃決定_海域決定"); if(stop_flg)return;
+
     }
 }
