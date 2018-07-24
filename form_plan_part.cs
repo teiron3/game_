@@ -4,7 +4,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 
 partial class form{
-    byte f = 0;
+
+    //補給フラグ
+    byte supplyFlg = 0;
+
     //メソッド supply 母港画面からの補給
     //引数 b :4bitでそれぞれの艦隊を選択する
     //        0b0000 で 1234 の順番
@@ -69,13 +72,20 @@ partial class form{
             return;
     }
 
+    //遠征
+    void expedition(){
+        //遠征艦隊フラグ
+        byte flg = 0;
+
+        //母港画面確認
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
+        //編成画面に遷移
+        a_non_b_click("編成_画面", "母港_編成"); if(stop_flg)return;
+        
+    }
+
     //1-1出撃
     void Fielde1_1(){
-        //delegate 母港画面に戻る
-        Action home_port_return = () =>{
-            a_non_b_click("母港_出撃", "母港_母港");
-        };
-
         //動作開始
         //母港画面確認
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
@@ -95,6 +105,6 @@ partial class form{
             if(stop_flg)return;
 
         }while(pic_con("母港_出撃"))
-        f &= 8;
+        supplyFlg |= 8;
     }
 }
