@@ -72,7 +72,7 @@ partial class form{
             return;
     }
 
-    //遠征
+    //遠征 ～ making now
     void expedition(){
         //遠征艦隊フラグ
         byte flg = 0;
@@ -98,13 +98,13 @@ partial class form{
 
         //海域戦闘
         do{
-            System.Threading.Thread.Sleep(1000)
+            System.Threading.Thread.Sleep(1000);
             a_click("母港_母港");
-            if(pic_con("戦闘_進撃"))a_click("戦闘_進撃");
-            if(pic_con("戦闘_夜戦"))a_click("戦闘_夜戦");
+            if(pic_con("戦闘_進撃"))a_del_a_click("戦闘_進撃");
+            if(pic_con("戦闘_夜戦"))a_del_a_click("戦闘_夜戦");
             if(stop_flg)return;
 
-        }while(pic_con("母港_出撃"))
+        }while(pic_con("母港_出撃"));
         supplyFlg |= 8;
     }
 }

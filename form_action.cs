@@ -35,6 +35,20 @@ partial class form{
     void a_click(string str){
         mouse.before_move_and_click(p_class[str]);
     }
+
+    //画像が消えるまでクリック
+    void a_del_a_click(string str){
+        if(p_class[str] == null){
+            stop_flg = true;
+            return;
+        }
+
+        while(p_hit.pic_con(p_class[str])){
+            mouse.before_move_and_click(p_class[str]);
+            mouse.move_cursor(p_class["母港_母港"]);
+            System.Threading.Thread.Sleep(1500);
+        }
+    }
     //str1 がなければ str2 をクリックする
     //画像が見つからない場合、エラーフラグを立てる
     void a_non_b_click(string str1,string str2){
@@ -44,9 +58,11 @@ partial class form{
             return;
         }
 
-        for(int cnt = 0; cnt <= 200; cnt++){
+        for(int cnt = 0; cnt <= 20; cnt++){
             if(p_hit.pic_con(p_class[str1]))return;
             mouse.before_move_and_click(p_class[str2]);
+            mouse.move_cursor(p_class["母港_母港"]);
+            System.Threading.Thread.Sleep(1500);
         }
         logwrite("error:" + p_class[str1].Name + "の画像が見つかりません");
         stop_flg = true;
@@ -56,7 +72,7 @@ partial class form{
     void a_b_change_c_click(string str1, string str2, string str3){
         p_hit.pic_get(p_class[str1]);
         p_hit.pic_get(p_class[str2]) ;
-        for(int i = 0; i <= 200; i++){
+        for(int i = 0; i <= 20; i++){
             mouse.before_move_and_click(p_class[str3]);
             if(!(pic_con(str1)) || !(pic_con(str2)))return;
         }

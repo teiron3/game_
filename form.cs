@@ -24,6 +24,7 @@ partial class form : Form{
         this.Text = "game manupirate";
         this.Width = 200;
         this.Height = 400;
+        this.Location = new Point(700, 10);
 
         //各種要素を設定
 
@@ -65,7 +66,7 @@ partial class form : Form{
     //btn1 のイベント(action start)
     void btn1_action_start(object sender, EventArgs e){
         if(rbtn1.Checked == true){
-            Task.Run(()=> supply((byte)15));
+            Task.Run(()=> around1_1());
             return;
         }
 
