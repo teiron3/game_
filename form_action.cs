@@ -68,6 +68,38 @@ partial class form{
         stop_flg = true;
     }
 
+    //オーバーロード(画面の一部変更検知有) 
+    void a_non_b_click(string str1,string str2,int cmp_x,int cmp_y){
+        //変化比較用画像取得
+        pic_data_class cmpclass = new pic_data_class();
+        cmpclass.Pic_X = cmp_x;
+        cmpclass.Pic_Y = cmp_y;
+        cmpclass.Pic_Width = 10;
+        cmpclass.Pic_Height = 10;
+        p_hit.pic_get(cmpclass);
+
+        //screen comp flg set
+        bool flg = true;
+        for(int cnt = 0; cnt <= 30; cnt++){
+            if(flg){
+                a_click(str2);
+                mouse.move_cursor(p_class["母港_母港"]);
+            }
+
+            if(flg){
+                for(int subcnt = 0; flg && subcnt <= 5 ; subcnt++){
+                    System.Threading.Thread.Sleep(600);
+                    flg = p_hit.pic_con(cmpclass);
+                }
+            }
+            if(!flg){
+                if(pic_con(str1)){
+                     break;
+                }
+            }
+        }
+    }
+
     //str1 & str2 の箇所が変化するまで str3 をクリック
     void a_b_change_c_click(string str1, string str2, string str3){
         p_hit.pic_get(p_class[str1]);

@@ -90,21 +90,48 @@ partial class form{
         //母港画面確認
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
         //母港から海域選択画面に遷移
-        a_non_b_click("出撃_出撃", "母港_出撃"); if(stop_flg)return;
-        a_non_b_click("出撃海域_1", "出撃_出撃"); if(stop_flg)return;
-        a_non_b_click("出撃決定_海域決定", "出撃海域詳細_1"); if(stop_flg)return;
-        a_non_b_click("出撃決定_出撃決定", "出撃決定_海域決定"); if(stop_flg)return;
+        a_non_b_click("出撃_出撃", "母港_出撃", 195, 415); if(stop_flg)return;
+        a_non_b_click("出撃海域_1", "出撃_出撃", 350, 435); if(stop_flg)return;
+        a_non_b_click("出撃決定_海域決定", "出撃海域詳細_1", 456, 166); if(stop_flg)return;
+        logwrite("出撃海域選択");
+        a_non_b_click("出撃決定_出撃決定", "出撃決定_海域決定", 618, 256); if(stop_flg)return;
+        logwrite("出撃海域決定");
         a_b_change_c_click("出撃決定_比較場所1","出撃決定_比較場所2","出撃決定_出撃決定");if(stop_flg)return;
+        logwrite("出撃");
 
+        //debug cnt
+        int dcnt = 0;
         //海域戦闘
         do{
-            System.Threading.Thread.Sleep(1000);
-            a_click("母港_母港");
-            if(pic_con("戦闘_進撃"))a_del_a_click("戦闘_進撃");
-            if(pic_con("戦闘_夜戦"))a_del_a_click("戦闘_夜戦");
-            if(stop_flg)return;
+            System.Threading.Thread.Sleep(200);
+            while(pic_con("戦闘_羅針盤")){
+                a_click("母港_母港");
+                System.Threading.Thread.Sleep(800);
+            }
+            if(pic_con("戦闘_終了")){
+                while(!pic_con("戦闘_進撃")){
+                    a_click("母港_母港");
+                    System.Threading.Thread.Sleep(800);
+                    if(pic_con("母港_出撃")){
+                        supplyFlg |= 8;
+                        return;
+                    }
+                }
+                a_del_a_click("戦闘_進撃");
+            }
 
-        }while(pic_con("母港_出撃"));
+            if(pic_con("戦闘_進撃")){
+                logwrite("進撃");
+                a_del_a_click("戦闘_進撃");
+            }
+            if(pic_con("戦闘_夜戦")){
+                a_del_a_click("戦闘_夜戦");
+            }
+
+            if(stop_flg)return;
+            logwrite(dcnt.ToString());
+            dcnt++;
+        }while(!pic_con("母港_出撃"));
         supplyFlg |= 8;
     }
 }
