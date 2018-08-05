@@ -58,11 +58,36 @@ partial class form{
             return;
         }
 
-        for(int cnt = 0; cnt <= 20; cnt++){
-            if(p_hit.pic_con(p_class[str1]))return;
-            mouse.before_move_and_click(p_class[str2]);
-            mouse.move_cursor(p_class["•ê`_•ê`"]);
-            System.Threading.Thread.Sleep(1500);
+        System.Threading.Thread.Sleep(300);
+
+        if(pic_con(str1)) return;
+
+        //•Ï‰»”äŠr—p‰æ‘œŽæ“¾
+        pic_data_class cmpclass = new pic_data_class();
+        cmpclass.Pic_X = p_class[str1].Pic_X;
+        cmpclass.Pic_Y = p_class[str1].Pic_Y;
+        cmpclass.Pic_Width = p_class[str1].Pic_Width;
+        cmpclass.Pic_Height = p_class[str1].Pic_Height;
+        p_hit.pic_get(cmpclass);
+
+        //screen comp flg set
+        bool flg = true;
+
+        for(int cnt = 0; cnt <= 30; cnt++){
+
+            if(flg){
+                a_click(str2);
+                mouse.move_cursor(p_class["•ê`_•ê`"]);
+            }
+
+            if(flg){
+                for(int subcnt = 0; flg && subcnt <= 5 ; subcnt++){
+                    System.Threading.Thread.Sleep(600);
+                    flg = p_hit.pic_con(cmpclass);
+                }
+            }
+            if(pic_con(str1)) return;
+                
         }
         logwrite("error:" + p_class[str1].Name + "‚Ì‰æ‘œ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
         stop_flg = true;
@@ -100,6 +125,87 @@ partial class form{
         }
     }
 
+    //ƒI[ƒo[ƒ[ƒh str1 ‚Ì‰ÓŠ‚ª•Ï‰»‚·‚é‚Ü‚Å str1 ‚ðƒNƒŠƒbƒN
+    void a_change_click(string str1){
+        if(p_class[str1] == null ){
+            stop_flg = true;
+            return;
+        }
+
+        System.Threading.Thread.Sleep(300);
+
+        //•Ï‰»”äŠr—p‰æ‘œŽæ“¾
+        pic_data_class cmpclass = new pic_data_class();
+        cmpclass.Pic_X = p_class[str1].X;
+        cmpclass.Pic_Y = p_class[str1].Y;
+        cmpclass.Pic_Width = p_class[str1].Width;
+        cmpclass.Pic_Height = p_class[str1].Height;
+        p_hit.pic_get(cmpclass);
+
+        //screen comp flg set
+        bool flg = true;
+
+        for(int cnt = 0; cnt <= 30; cnt++){
+
+            if(flg){
+                a_click(str1);
+                mouse.move_cursor(p_class["•ê`_•ê`"]);
+            }
+
+            if(flg){
+                for(int subcnt = 0; flg && subcnt <= 5 ; subcnt++){
+                    System.Threading.Thread.Sleep(400);
+                    flg = p_hit.pic_con(cmpclass);
+                }
+            }else{
+                return;
+            }
+        }
+        logwrite("error:" + p_class[str1].Name + "‚Ì‰æ‘œ‚ª•Ï‰»‚µ‚Ü‚¹‚ñ");
+        stop_flg = true;
+    }
+
+    //str1 ‚Ì‰ÓŠ‚ª•Ï‰»‚·‚é‚Ü‚Å str2 ‚ðƒNƒŠƒbƒN
+    void a_change_click(string str1, string str2){
+        if(p_class[str1] == null || p_class[str2] == null){
+            stop_flg = true;
+            return;
+        }
+
+        System.Threading.Thread.Sleep(300);
+
+
+        //•Ï‰»”äŠr—p‰æ‘œŽæ“¾
+        pic_data_class cmpclass = new pic_data_class();
+        cmpclass.Pic_X = p_class[str1].X;
+        cmpclass.Pic_Y = p_class[str1].Y;
+        cmpclass.Pic_Width = p_class[str1].Width;
+        cmpclass.Pic_Height = p_class[str1].Height;
+        p_hit.pic_get(cmpclass);
+
+        //screen comp flg set
+        bool flg = true;
+
+        for(int cnt = 0; cnt <= 30; cnt++){
+
+            if(flg){
+                a_click(str2);
+                mouse.move_cursor(p_class["•ê`_•ê`"]);
+            }
+
+            if(flg){
+                for(int subcnt = 0; flg && subcnt <= 5 ; subcnt++){
+                    System.Threading.Thread.Sleep(600);
+                    flg = p_hit.pic_con(cmpclass);
+                }
+            }else{
+                return;
+            }
+        }
+        logwrite("error:" + p_class[str1].Name + "‚Ì‰æ‘œ‚ª•Ï‰»‚µ‚Ü‚¹‚ñ");
+        stop_flg = true;
+    }
+    
     //str1 & str2 ‚Ì‰ÓŠ‚ª•Ï‰»‚·‚é‚Ü‚Å str3 ‚ðƒNƒŠƒbƒN
     void a_b_change_c_click(string str1, string str2, string str3){
         p_hit.pic_get(p_class[str1]);

@@ -5,23 +5,32 @@ using System.Drawing.Imaging;
 
 partial class form{
 
-    //補給フラグ
-    byte supplyFlg = 0;
-
     //メソッド supply 母港画面からの補給
-    //引数 b :4bitでそれぞれの艦隊を選択する
-    //        0b0000 で 1234 の順番
-    void supply(byte f){
-        //引数チェック適正な値でない場合はエラーを返して動作終了
-        if((f & 15) == 0){
-            logwrite_msgbox("error:supply 引数エラー");
-            stop_flg = true;
-            return;
-        }
+    byte supply(){
+        //遠征判定用戻り値 byte変数の設定
+        byte flg = 0;
 
         //delegate 母港画面に戻る
         Action home_port_return = () =>{
             a_non_b_click("母港_出撃", "母港_母港");
+        };
+        
+        Func<bool> color_check = () =>{
+            //bitmapクラスのインスタンス化
+            Bitmap bitmap = new Bitmap(1,1);
+
+            //ディスプレイの任意の点の取得
+            Graphics g = Graphics.FromImage(bitmap);
+            g.CopyFromScreen( new Point(100, 100), new Point( 0, 0),  bitmap.Size);
+            g.Dispose();
+
+            //Colorクラスのインスタンス化
+            Color c = bitmap.GetPixel(0,0);
+            if(c.B <= 5){
+                return true;
+            }else{
+                return false;
+            }
         };
 
         //deligate 補給実施
@@ -31,45 +40,39 @@ partial class form{
 
         //動作開始
         //母港から補給画面に遷移
-        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
-        a_non_b_click("補給_燃料", "母港_補給"); if(stop_flg)return;
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return flg;
+        a_non_b_click("補給_燃料", "母港_補給"); if(stop_flg)return flg;
 
         //1艦隊の補給
-        if((f & 8) != 0){
-            run_supplay();
-            if(stop_flg)return;
-        }
+        if(color_check()){ run_supplay();}
 
         //2艦隊の補給
-        if((f & 4) != 0){
-            a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択2");
-            if(stop_flg)return;
-
+        a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択2");
+        if(stop_flg)return flg;
+        if(color_check()){
             run_supplay();
-            if(stop_flg)return;
+            flg |= 4;
         }
+        if(stop_flg)return flg;
 
         //3艦隊の補給
-        if((f & 2) != 0){
-            a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択3");
-            if(stop_flg)return;
-
+        a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択3");
+        if(stop_flg)return flg;
+        if(color_check()){
             run_supplay();
-            if(stop_flg)return;
+            flg |= 2;
         }
-
         //4艦隊の補給
-        if((f & 1) != 0){
-            a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択4");
-            if(stop_flg)return;
-
+        a_b_change_c_click("補給_比較場所1", "補給_比較場所2", "補給_艦隊選択4");
+        if(stop_flg)return flg;
+        if(color_check()){
             run_supplay();
-            if(stop_flg)return;
+            flg |= 1;
         }
 
             home_port_return();
             logwrite("補給完了");
-            return;
+            return flg;
     }
 
     //遠征 ～ making now
@@ -77,11 +80,11 @@ partial class form{
         //遠征艦隊フラグ
         byte flg = 0;
 
-        //母港画面確認
-        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
-        //編成画面に遷移
-        a_non_b_click("編成_画面", "母港_編成"); if(stop_flg)return;
-        
+        //補給し、遠征艦隊の確認
+        flg = supply();
+        //遠征艦隊が母港に戻ってなかったら抜ける
+        if(flg == 0)return;
+        logwrite(flg.ToString());
     }
 
     //1-1出撃
@@ -113,7 +116,6 @@ partial class form{
                     a_click("母港_母港");
                     System.Threading.Thread.Sleep(800);
                     if(pic_con("母港_出撃")){
-                        supplyFlg |= 8;
                         return;
                     }
                 }
@@ -132,6 +134,5 @@ partial class form{
             logwrite(dcnt.ToString());
             dcnt++;
         }while(!pic_con("母港_出撃"));
-        supplyFlg |= 8;
     }
 }
