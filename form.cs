@@ -70,11 +70,11 @@ partial class form : Form{
             return;
         }
 
-        /*
         if(rbtn2.Checked == true){
-            Task.Run(()=> testmeso(this.x));
+            Task.Run(()=> expedition());
             return;
         }
+        /*
         if(rbtn3.Checked == true){
             Task.Run(()=> testmeso(this.x));
             return;

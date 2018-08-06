@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 partial class form{
 
     //メソッド supply 母港画面からの補給
+    //戻り値は遠征の判定用
     byte supply(){
         //遠征判定用戻り値 byte変数の設定
         byte flg = 0;
@@ -21,12 +22,12 @@ partial class form{
 
             //ディスプレイの任意の点の取得
             Graphics g = Graphics.FromImage(bitmap);
-            g.CopyFromScreen( new Point(100, 100), new Point( 0, 0),  bitmap.Size);
+            g.CopyFromScreen( new Point(525, 225), new Point( 0, 0),  bitmap.Size);
             g.Dispose();
 
             //Colorクラスのインスタンス化
             Color c = bitmap.GetPixel(0,0);
-            if(c.B <= 5){
+            if(c.B >= 5){
                 return true;
             }else{
                 return false;
@@ -81,10 +82,16 @@ partial class form{
         byte flg = 0;
 
         //補給し、遠征艦隊の確認
-        flg = supply();
+        //flg = supply();
         //遠征艦隊が母港に戻ってなかったら抜ける
-        if(flg == 0)return;
-        logwrite(flg.ToString());
+        //if(flg == 0)return;
+        //遠征画面へ
+        //母港画面確認
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
+        //母港から出撃画面に遷移
+        a_non_b_click("出撃_出撃", "母港_出撃", 195, 415); if(stop_flg)return;
+        //遠征画面に遷移
+        a_non_b_click("遠征_画面","出撃_遠征"); if(stop_flg)return;
     }
 
     //1-1出撃
@@ -96,11 +103,8 @@ partial class form{
         a_non_b_click("出撃_出撃", "母港_出撃", 195, 415); if(stop_flg)return;
         a_non_b_click("出撃海域_1", "出撃_出撃", 350, 435); if(stop_flg)return;
         a_non_b_click("出撃決定_海域決定", "出撃海域詳細_1", 456, 166); if(stop_flg)return;
-        logwrite("出撃海域選択");
         a_non_b_click("出撃決定_出撃決定", "出撃決定_海域決定", 618, 256); if(stop_flg)return;
-        logwrite("出撃海域決定");
         a_b_change_c_click("出撃決定_比較場所1","出撃決定_比較場所2","出撃決定_出撃決定");if(stop_flg)return;
-        logwrite("出撃");
 
         //debug cnt
         int dcnt = 0;
