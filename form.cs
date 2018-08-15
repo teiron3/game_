@@ -8,6 +8,10 @@ partial class form : Form{
 
     //停止フラグ
     bool stop_flg = false;
+    // csvファイルのデータを格納する Dictionary クラスを宣言
+    public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
+    // csvファイル名の設定
+    public string csv_file{get{return "csv_file.csv";}}
 
     //要素のクラス宣言とインスタンス化
     Button btn1 = new Button();
@@ -64,14 +68,19 @@ partial class form : Form{
 
     //イベントの設定
     //btn1 のイベント(action start)
-    void btn1_action_start(object sender, EventArgs e){
+    private async void btn1_action_start(object sender, EventArgs e){
+        btn1.Enabled = false;
         if(rbtn1.Checked == true){
-            Task.Run(()=> around1_1());
+            await Task.Run(()=> around1_1());
+            btn2.Text = "停止ボタン";
+            btn1.Enabled = true;
             return;
         }
 
         if(rbtn2.Checked == true){
-            Task.Run(()=> expedition());
+            await Task.Run(()=> expedition());
+            btn2.Text = "停止ボタン";
+            btn1.Enabled = true;
             return;
         }
         /*

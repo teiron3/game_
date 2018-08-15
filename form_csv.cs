@@ -5,11 +5,11 @@ using System.Drawing.Imaging;
 using System.Collections.Generic;
 
 partial class form{
-    // csvファイルのデータを格納する Dictionary クラスを宣言
-    public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
 
+    // csvファイルのデータを格納する Dictionary クラスを宣言
+    //public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
     // csvファイル名の設定
-    public string csv_file{get{return "csv_file.csv";}}
+    //public string csv_file{get{return "csv_file.csv";}}
 
     //csvファイルを読み込んでデータ型クラスに入れるメソッド
     //正常読み込みできなかったときに false を返す 
@@ -18,8 +18,7 @@ partial class form{
         //正常に読み込みできたかどうかを判定用
         bool flg = true;
 
-        string file_path = csv_file;
-        if(!System.IO.File.Exists(file_path)) {
+        if(!System.IO.File.Exists(csv_file)) {
             logwrite_msgbox("error:設定用のcsvファイルがありません");
             stop_flg = true;
             return false;

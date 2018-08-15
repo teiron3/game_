@@ -13,22 +13,22 @@ partial class form{
     //‰æ‘œ‚ªˆê’v‚·‚é‚ê‚Î true ‚ğ•Ô‚µAˆê’v‚µ‚È‚¯‚ç‚Î false ‚ğ•Ô‚·
     bool pic_con(string str){
         bool flg = p_hit.pic_con(p_class[str]);
-        if(flg){
+        /*if(flg){
             logwrite(str + "‚Ì‰æ‘œ‚ªˆê’v‚µ‚Ü‚µ‚½");
         }else{
             logwrite(str + "‚Ì‰æ‘œ‚Íˆê’v‚µ‚Ü‚¹‚ñ");
-        }
+        }*/
         return flg;
     }
 
     //‰æ‘œ‚ğ”­Œ©‚·‚ê‚Î true ‚ğ•Ô‚µA”­Œ©‚Å‚«‚È‚¯‚ê‚Î false‚ğ•Ô‚·
     bool pic_search(string str){
         bool flg = p_hit.pic_search(p_class[str]);
-        if(flg){
+        /*if(flg){
             logwrite(str + "‚Ì‰æ‘œ‚ğ”­Œ©‚µ‚Ü‚µ‚½");
         }else{
             logwrite(str + "‚Ì‰æ‘œ‚Í”­Œ©‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½");
-        }
+        }*/
         return flg;
     }
 
@@ -72,22 +72,24 @@ partial class form{
 
         //screen comp flg set
         bool flg = true;
+        for(int ccnt = 0; ccnt < 30; ccnt++){
+            for(int cnt = 0; cnt <= 20; cnt++){
+                if(stop_flg)return;
 
-        for(int cnt = 0; cnt <= 30; cnt++){
-
-            if(flg){
-                a_click(str2);
-                mouse.move_cursor(p_class["•ê`_•ê`"]);
-            }
-
-            if(flg){
-                for(int subcnt = 0; flg && subcnt <= 5 ; subcnt++){
-                    System.Threading.Thread.Sleep(600);
-                    flg = p_hit.pic_con(cmpclass);
+                if(flg){
+                    a_click(str2);
+                    mouse.move_cursor(p_class["•ê`_•ê`"]);
                 }
+
+                if(flg){
+                    for(int subcnt = 0; flg && subcnt <= 5 ; subcnt++){
+                        System.Threading.Thread.Sleep(400);
+                        flg = p_hit.pic_con(cmpclass);
+                    }
+                }
+                if(pic_con(str1)) return;
             }
-            if(pic_con(str1)) return;
-                
+            flg = true;
         }
         logwrite("error:" + p_class[str1].Name + "‚Ì‰æ‘œ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
         stop_flg = true;
@@ -106,6 +108,7 @@ partial class form{
         //screen comp flg set
         bool flg = true;
         for(int cnt = 0; cnt <= 30; cnt++){
+            if(stop_flg)return;
             if(flg){
                 a_click(str2);
                 mouse.move_cursor(p_class["•ê`_•ê`"]);
@@ -146,6 +149,7 @@ partial class form{
         bool flg = true;
 
         for(int cnt = 0; cnt <= 30; cnt++){
+            if(stop_flg)return;
 
             if(flg){
                 a_click(str1);
@@ -187,6 +191,7 @@ partial class form{
         bool flg = true;
 
         for(int cnt = 0; cnt <= 30; cnt++){
+            if(stop_flg)return;
 
             if(flg){
                 a_click(str2);

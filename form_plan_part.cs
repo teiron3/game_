@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 partial class form{
 
@@ -52,6 +53,7 @@ partial class form{
         if(stop_flg)return flg;
         if(color_check()){
             run_supplay();
+            logwrite("2in");
             flg |= 4;
         }
         if(stop_flg)return flg;
@@ -61,6 +63,7 @@ partial class form{
         if(stop_flg)return flg;
         if(color_check()){
             run_supplay();
+            logwrite("3in");
             flg |= 2;
         }
         //4艦隊の補給
@@ -68,23 +71,37 @@ partial class form{
         if(stop_flg)return flg;
         if(color_check()){
             run_supplay();
+            logwrite("4in");
             flg |= 1;
         }
 
-            home_port_return();
-            logwrite("補給完了");
-            return flg;
+        home_port_return();
+        logwrite("補給完了");
+        return flg;
     }
 
-    //遠征 ～ making now
+    //遠征 ～ test now
     void expedition(){
         //遠征艦隊フラグ
         byte flg = 0;
 
         //補給し、遠征艦隊の確認
-        //flg = supply();
+        flg = supply();
         //遠征艦隊が母港に戻ってなかったら抜ける
-        //if(flg == 0)return;
+        if(flg == 0)return;
+
+        //設定ファイルの有無の確認
+        if(!System.IO.File.Exists(@"expandition.ini")) {
+            logwrite("error:遠征設定ファイルがありません");
+            stop_flg = true;
+            return;
+        }
+        //遠征設定ファイルの読み込み
+        byte[] expandition_data = new byte[6];
+        FileStream stream = File.Open(@".\expandition.ini", FileMode.Open, FileAccess.Read);
+        stream.Read(expandition_data, 0, 6);
+        stream.Close();
+        
         //遠征画面へ
         //母港画面確認
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
@@ -92,6 +109,53 @@ partial class form{
         a_non_b_click("出撃_出撃", "母港_出撃", 195, 415); if(stop_flg)return;
         //遠征画面に遷移
         a_non_b_click("遠征_画面","出撃_遠征"); if(stop_flg)return;
+
+        //遠征艦隊決定前まで進めるメソッド
+        //変数 i は艦隊 変数 b は前の艦隊の海域 戻り値は処理を行った海域
+        Func<int, int, int> sub_expendition = (i, b) => {
+            //error process
+            if((expandition_data[i] <= 0) || (expandition_data[i + 1] >= 9)){
+                stop_flg = true;
+                return 0;
+            }
+            string tmp_str1 = "遠征海域_" + expandition_data[i].ToString();
+            string tmp_str2 = "遠征海域詳細_" + expandition_data[i + 1].ToString();
+            if(expandition_data[i] != b){
+                a_change_click(tmp_str1);
+            }
+            a_non_b_click("遠征決定_海域決定", tmp_str2); 
+            a_change_click("遠征決定_海域決定");
+            //a_non_b_click("遠征決定_遠征開始", "遠征決定_海域決定"); 
+
+            return expandition_data[i];
+        };
+
+        //遠征決定まで処理する
+        //前の艦隊の海域 初期値は1
+        int bf = 1;
+        //第2艦隊の処理
+        if((flg & 4) > 0){
+            bf = sub_expendition(0, bf);if(stop_flg)return;
+            a_non_b_click("遠征_画面", "遠征決定_遠征開始");if(stop_flg)return;
+            logwrite("第2艦隊遠征出発");
+        }
+        //第3艦隊の処理
+        if((flg & 2) > 0){
+            bf = sub_expendition(2, bf);if(stop_flg)return;
+            a_change_click("遠征決定_艦隊選択3");if(stop_flg)return;
+            a_non_b_click("遠征_画面", "遠征決定_遠征開始");if(stop_flg)return;
+            logwrite("第3艦隊遠征出発");
+        }
+        //第4艦隊の処理
+        if((flg & 1) > 0){
+            bf = sub_expendition(4, bf);if(stop_flg)return;
+            a_change_click("遠征決定_艦隊選択4");if(stop_flg)return;
+            a_non_b_click("遠征_画面", "遠征決定_遠征開始");if(stop_flg)return;
+            logwrite("第4艦隊遠征出発");
+        }
+
+        //母港画面に戻る
+        a_non_b_click("母港_出撃", "母港_母港");
     }
 
     //1-1出撃
