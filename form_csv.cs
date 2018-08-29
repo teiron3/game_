@@ -24,7 +24,7 @@ partial class form{
             return false;
         }
 
-        System.IO.StreamReader text_strm = new System.IO.StreamReader(file_path, System.Text.Encoding.GetEncoding("shift_jis"));
+        System.IO.StreamReader text_strm = new System.IO.StreamReader(csv_file, System.Text.Encoding.GetEncoding("shift_jis"));
         while(text_strm.Peek() >= 0){
             string s = text_strm.ReadLine();
             //コメントアウト # の処理

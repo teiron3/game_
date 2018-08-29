@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Linq;
+using System.Threading.Tasks;
 
 class pic_hit{
     /* 引数 obj に記録された bmpデータ が指定の場所にあればtrueを返す */
@@ -92,6 +93,39 @@ class pic_hit{
         Graphics g = Graphics.FromImage(obj.Pic_data);
         g.CopyFromScreen( new Point( obj.Pic_X , obj.Pic_Y), new Point( 0, 0),  obj.Pic_data.Size);
         g.Dispose();
+    }
+
+    //特定場所の色を string で返す
+    public string bitcolor(int x, int y){
+        int redmax = 0,greenmax = 0,bluemax = 0;
+        Point p = new Point(x, y);
+        Bitmap bitmap = new Bitmap(1,1);
+            Graphics g = Graphics.FromImage(bitmap);
+            g.CopyFromScreen(p, new Point(0, 0), bitmap.Size);
+            g.Dispose();
+            Color c = bitmap.GetPixel(0, 0);
+            redmax = c.R;
+            greenmax = c.G;
+            bluemax = c.B;
+        return redmax + "," + greenmax + "," + bluemax;
+    }
+
+    //特定場所の色を string で返す(30回)
+    public string bitcolor30(int x, int y){
+        int redmax = 0,greenmax = 0,bluemax = 0;
+        Point p = new Point(x, y);
+        Bitmap bitmap = new Bitmap(1,1);
+        for(int i = 0;i <= 20; i++){
+            Graphics g = Graphics.FromImage(bitmap);
+            g.CopyFromScreen(p, new Point(0, 0), bitmap.Size);
+            g.Dispose();
+            Task.Delay(150).Wait();
+            Color c = bitmap.GetPixel(0, 0);
+            if(redmax <= c.R)redmax = c.R;
+            if(greenmax <= c.G)greenmax = c.G;
+            if(bluemax <= c.B)bluemax = c.B;
+        }
+        return redmax + "," + greenmax + "," + bluemax + "," + x + "_" + y;
     }
 
 }

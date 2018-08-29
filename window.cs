@@ -51,22 +51,18 @@ public class operation_window{
             StringBuilder tsb = new StringBuilder(textLen + 1);
             GetWindowText(hWnd, tsb, tsb.Capacity);
 
-            //対象のウィンドウを位置と大きさを設定する
-            if(tsb.ToString().IndexOf("ブラウザ") >= 0){
-                MoveWindow(hWnd, 0, 0, 820, 550, 1);
-                return true;
-            }
-            if(tsb.ToString().IndexOf("入渠") >= 0){
-                MoveWindow(hWnd, 200, 0, 300, 200, 1);
-                return true;
-            }
             //結果を表示する
-            //Console.WriteLine("タイトル:" + tsb.ToString());
+            if((tsb.ToString().IndexOf("艦これ") >= 0) && (tsb.ToString().IndexOf("Edge") >= 0)){
+                //ウィンドウを設定する
+                MoveWindow(hWnd, 0, -150, 1240, 900, 1);
+                //タイトルとハンドルをコンソールに表示
+                //Console.WriteLine("タイトル:{0} handle:{1}" ,tsb.ToString(),textLen);
+
+            }
         }
 
         //すべてのウィンドウを列挙する
         return true;
     }
-
 }
 }

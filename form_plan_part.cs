@@ -11,6 +11,9 @@ partial class form{
     byte supply(){
         //遠征判定用戻り値 byte変数の設定
         byte flg = 0;
+        //要補給かどうかの判定場所
+        int watchsupplyX = 791;
+        int watchsupplyY = 259;
 
         //delegate 母港画面に戻る
         Action home_port_return = () =>{
@@ -23,7 +26,7 @@ partial class form{
 
             //ディスプレイの任意の点の取得
             Graphics g = Graphics.FromImage(bitmap);
-            g.CopyFromScreen( new Point(525, 225), new Point( 0, 0),  bitmap.Size);
+            g.CopyFromScreen( new Point(watchsupplyX, watchsupplyY), new Point( 0, 0),  bitmap.Size);
             g.Dispose();
 
             //Colorクラスのインスタンス化
@@ -45,6 +48,8 @@ partial class form{
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return flg;
         a_non_b_click("補給_燃料", "母港_補給"); if(stop_flg)return flg;
 
+        //1艦隊のダメージ確認
+        damagejudge();
         //1艦隊の補給
         if(color_check()){ run_supplay();}
 
@@ -80,10 +85,13 @@ partial class form{
         return flg;
     }
 
-    //遠征 ～ test now
+    //遠征
     void expedition(){
         //遠征艦隊フラグ
         byte flg = 0;
+        //母港から出撃画面に遷移するときの画像比較場所
+        int portchangeX = 580;
+        int portchangeY = 500;
 
         //補給し、遠征艦隊の確認
         flg = supply();
@@ -106,7 +114,7 @@ partial class form{
         //母港画面確認
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
         //母港から出撃画面に遷移
-        a_non_b_click("出撃_出撃", "母港_出撃", 195, 415); if(stop_flg)return;
+        a_non_b_click("出撃_出撃", "母港_出撃", portchangeX, portchangeY); if(stop_flg)return;
         //遠征画面に遷移
         a_non_b_click("遠征_画面","出撃_遠征"); if(stop_flg)return;
 
@@ -121,7 +129,8 @@ partial class form{
             string tmp_str1 = "遠征海域_" + expandition_data[i].ToString();
             string tmp_str2 = "遠征海域詳細_" + expandition_data[i + 1].ToString();
             if(expandition_data[i] != b){
-                a_change_click(tmp_str1);
+                System.Threading.Tasks.Task.Delay(10000).Wait();
+                a_change_click(tmp_str2, tmp_str1);
             }
             a_non_b_click("遠征決定_海域決定", tmp_str2); 
             a_change_click("遠征決定_海域決定");
@@ -160,14 +169,22 @@ partial class form{
 
     //1-1出撃
     void Fielde1_1(){
+        //母港→出撃画面の遷移確認場所
+        int portchangeX = 580; int portchangeY = 500;
+        //出撃画面→海域画面の遷移確認場所
+        int seaX = 275; int seaY = 583;
+        //海域画面→海域決定の遷移確認場所
+        int seadicisionX = 900; int seadicisionY = 600;
+        //海域決定→艦隊決定の遷移確認場所
+        int fleeddicisionX = 715; int fleeddicisionY = 633;
         //動作開始
         //母港画面確認
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return;
         //母港から海域選択画面に遷移
-        a_non_b_click("出撃_出撃", "母港_出撃", 195, 415); if(stop_flg)return;
-        a_non_b_click("出撃海域_1", "出撃_出撃", 350, 435); if(stop_flg)return;
-        a_non_b_click("出撃決定_海域決定", "出撃海域詳細_1", 456, 166); if(stop_flg)return;
-        a_non_b_click("出撃決定_出撃決定", "出撃決定_海域決定", 618, 256); if(stop_flg)return;
+        a_non_b_click("出撃_出撃", "母港_出撃", portchangeX, portchangeY); if(stop_flg)return;
+        a_non_b_click("出撃_海域画面", "出撃_出撃", seaX, seaY); if(stop_flg)return;
+        a_non_b_click("出撃決定_海域決定", "出撃海域詳細_1", seadicisionX, seadicisionY); if(stop_flg)return;
+        a_non_b_click("出撃決定_出撃決定", "出撃決定_海域決定", fleeddicisionX, fleeddicisionY); if(stop_flg)return;
         a_b_change_c_click("出撃決定_比較場所1","出撃決定_比較場所2","出撃決定_出撃決定");if(stop_flg)return;
 
         //debug cnt

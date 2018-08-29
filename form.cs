@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 // form の形状とイベントを記載
 partial class form : Form{
@@ -12,6 +13,8 @@ partial class form : Form{
     public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
     // csvファイル名の設定
     public string csv_file{get{return "csv_file.csv";}}
+    //ダメージ判定用フラグ
+    int damageRed = 0,damageOrange = 0;
 
     //要素のクラス宣言とインスタンス化
     Button btn1 = new Button();
@@ -26,9 +29,9 @@ partial class form : Form{
     public form(){
         // formの大きさとタイトルを設定
         this.Text = "game manupirate";
-        this.Width = 200;
-        this.Height = 400;
-        this.Location = new Point(700, 10);
+        this.Size = new Size(1200, 200);
+        this.StartPosition = FormStartPosition.Manual;
+        this.Location = new Point(0, 730);
 
         //各種要素を設定
 
@@ -51,19 +54,19 @@ partial class form : Form{
         //ラジオボタン
         rbtn1.Parent = this;
         rbtn1.Location = new Point(15, 20);
-        rbtn1.Text = "test";
+        rbtn1.Text = "遠征のみ";
 
         rbtn2.Parent = this;
         rbtn2.Location = new Point(15, 40);
-        rbtn2.Text = "test2";
+        rbtn2.Text = "test";
 
         rbtn3.Parent = this;
         rbtn3.Location = new Point(15, 60);
-        rbtn3.Text = "test4";
+        rbtn3.Text = "";
 
         rbtn4.Parent = this;
         rbtn4.Location = new Point(15, 80);
-        rbtn4.Text = "test5";
+        rbtn4.Text = "";
     }
 
     //イベントの設定
@@ -71,14 +74,15 @@ partial class form : Form{
     private async void btn1_action_start(object sender, EventArgs e){
         btn1.Enabled = false;
         if(rbtn1.Checked == true){
-            await Task.Run(()=> around1_1());
+            await Task.Run(()=> expendjitiononly());
             btn2.Text = "停止ボタン";
             btn1.Enabled = true;
             return;
         }
 
         if(rbtn2.Checked == true){
-            await Task.Run(()=> expedition());
+            Task task = Task.Run(()=> damagejudge());
+            await task;
             btn2.Text = "停止ボタン";
             btn1.Enabled = true;
             return;
