@@ -37,17 +37,20 @@ partial class form : Form{
 
         //ボタン
         btn1.Parent = this;
-        btn1.Location = new Point(50, 150);
+        btn1.Location = new Point(15, 90);
+        btn1.Size = new Size(90, 40);
         btn1.Text = "スタート";
         btn1.Click += new EventHandler(btn1_action_start);
 
         btn2.Parent = this;
-        btn2.Location = new Point(50, 190);
+        btn2.Location = new Point(120, 90);
+        btn2.Size = new Size(90, 40);
         btn2.Text = "停止ボタン";
         btn2.Click += new EventHandler(btn2_end_key);
 
         btn3.Parent = this;
-        btn3.Location = new Point(50, 230);
+        btn3.Location = new Point(240, 90);
+        btn3.Size = new Size(90, 40);
         btn3.Text = "ウィンドウ位置修正";
         btn3.Click += new EventHandler(btn3_window);
 
@@ -57,15 +60,15 @@ partial class form : Form{
         rbtn1.Text = "遠征のみ";
 
         rbtn2.Parent = this;
-        rbtn2.Location = new Point(15, 40);
+        rbtn2.Location = new Point(140, 20);
         rbtn2.Text = "test";
 
         rbtn3.Parent = this;
-        rbtn3.Location = new Point(15, 60);
+        rbtn3.Location = new Point(15, 55);
         rbtn3.Text = "";
 
         rbtn4.Parent = this;
-        rbtn4.Location = new Point(15, 80);
+        rbtn4.Location = new Point(140, 55);
         rbtn4.Text = "";
     }
 
@@ -77,14 +80,16 @@ partial class form : Form{
             await Task.Run(()=> expendjitiononly());
             btn2.Text = "停止ボタン";
             btn1.Enabled = true;
+            stop_flg = false;
             return;
         }
 
         if(rbtn2.Checked == true){
-            Task task = Task.Run(()=> damagejudge());
+            Task task = Task.Run(()=> plantest());
             await task;
             btn2.Text = "停止ボタン";
             btn1.Enabled = true;
+            stop_flg = false;
             return;
         }
         /*

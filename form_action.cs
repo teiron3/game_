@@ -286,11 +286,6 @@ partial class form{
         int cnt = 0;
         //返り値の色数値を代入する変数
         string[] tmp = new string[3];
-        //艦の耐久色数値Get
-        //TVask<string> task = new Task<int, int, string>;
-        //task[0] = new Task<int, int,string>( (x, y[0]) => p_hit.bitcolor30(x, y));
-        //task[1] = new Task<int, int,string>( (x, y[1]) => p_hit.bitcolor30(x, y));
-
         
         for(; cnt <= 5; cnt++){
             tmp = p_hit.bitcolor(kanx, kany[cnt]).Split(',');
@@ -339,17 +334,45 @@ partial class form{
 
         if(damageRed > 0)logwrite("大破艦あり");
         if(damageOrange > 0)logwrite("中破以上の艦あり");
-        logwrite("end");
-
     }
 
+    //入渠チェック(補給)
+    void dockcheck(){
+        //dockflg初期化
+        int dockflg = 0;
+        //入渠中の判定設定色(red < 60, green >180, blue > 190)
+        int red = 60, green = 180, blue = 190;
+        //判定の場所
+        int x = 454;
+        int[] y = {277, 351, 429, 507, 585, 661};
+        //判定対象（中破以上）
+        tmporange = damageOrange;
+
+
+    }
+    //単艦設定
     void maketankan(int groupnum, int kannum){
+        //外す艦のカウント用変数
+        int tmp = kannum;
         //母港確認
         a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return ;
         //母港→編成画面
         a_non_b_click("編成_画面", "母港_編成"); if(stop_flg)return ;
         //編成展開画面へ
-        
+        a_change_click("編成_編成展開", 193, 641);
+        //編成展開
+        a_change_click("編成展開_展開" + groupnum.ToString(), 197, 215);
+
+        while(tmp > 1){
+            a_non_b_click("編成_艦船選択", "編成_変更(旗艦)");
+            a_change_click("編成_艦船選択", "編成_外す");
+            tmp--;
+        }
+
+        a_non_b_click("編成_空の第2艦", "編成_旗艦以外外す");
+
+        //母港に戻る
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return ;
 
     }
 

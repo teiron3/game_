@@ -6,12 +6,21 @@ using System.Drawing.Imaging;
 using System.Threading.Tasks;
 
 partial class form{
+    //test
+    void plantest(){
+        maketankan(1, 4);
+        maketankan(2, 1);
+        maketankan(3, 3);
+        maketankan(4, 2);
+        maketankan(5, 6);
+    }
     //1-1ü‰ñ
     void around1_1(){
         Fielde1_1();if(stop_flg)return;
         expedition();
     }
 
+    //‰“ª‚Ì‚İ
     void expendjitiononly(){
 
         Func<int, int> rnd = (rr) => {
