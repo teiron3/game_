@@ -337,19 +337,72 @@ partial class form{
     }
 
     //入渠チェック(補給)
+    //ダメージ判定用フラグ int damageRed,damageOrange
+    //入渠用フラグ int dockflg
     void dockcheck(){
+        if(damageOrange == 0){return;}
         //dockflg初期化
-        int dockflg = 0;
+        dockflg = 0;
         //入渠中の判定設定色(red < 60, green >180, blue > 190)
         int red = 60, green = 180, blue = 190;
         //判定の場所
         int x = 454;
         int[] y = {277, 351, 429, 507, 585, 661};
-        //判定対象（中破以上）
-        tmporange = damageOrange;
 
-
+        Task<string> task1 = null, task2 = null, task3 = null, task4 = null, task5 = null, task6 = null;
+        if((damageOrange & 32) > 0){
+            task1 = Task.Run(() => p_hit.bitcolor30(x, y[0]));
+        }
+        if((damageOrange & 16) > 0){
+            task2 = Task.Run(() => p_hit.bitcolor30(x, y[1]));
+        }
+        if((damageOrange & 8) > 0){
+            task3 = Task.Run(() => p_hit.bitcolor30(x, y[2]));
+        }
+        if((damageOrange & 4) > 0){
+            task4 = Task.Run(() => p_hit.bitcolor30(x, y[3]));
+        }
+        if((damageOrange & 2) > 0){
+            task5 = Task.Run(() => p_hit.bitcolor30(x, y[4]));
+        }
+        if((damageOrange & 1) > 0){
+            task6 = Task.Run(() => p_hit.bitcolor30(x, y[5]));
+        }
+        //艦が入渠中か判定する
+        Action<int, Task<string>> taskcomplete = (bittmp, taskx) =>{
+                    while(!taskx.IsCompleted)Task.Delay(1000).Wait();
+                    string[] tmp = taskx.Result.Split(',');
+                    logwrite(taskx.Result);
+                    if(int.Parse(tmp[0]) < red && int.Parse(tmp[1]) > green && int.Parse(tmp[2]) > blue){
+                        dockflg |= bittmp;
+                    } 
+        };
+        if((damageOrange & 32) > 0){
+            while(!task1.IsCompleted){Task.Delay(500).Wait();}
+            taskcomplete(32, task1);
+        }
+        if((damageOrange & 16) > 0){
+            while(!task2.IsCompleted){Task.Delay(500).Wait();}
+            taskcomplete(16, task2);
+        }
+        if((damageOrange & 8) > 0){
+            while(!task3.IsCompleted){Task.Delay(500).Wait();}
+            taskcomplete(8, task3);
+        }
+        if((damageOrange & 4) > 0){
+            while(!task4.IsCompleted){Task.Delay(500).Wait();}
+            taskcomplete(4, task4);
+        }
+        if((damageOrange & 2) > 0){
+            while(!task5.IsCompleted){Task.Delay(500).Wait();}
+            taskcomplete(2, task5);
+        }
+        if((damageOrange & 1) > 0){
+            while(!task6.IsCompleted){Task.Delay(500).Wait();}
+            taskcomplete(1, task6);
+        }
     }
+
     //単艦設定
     void maketankan(int groupnum, int kannum){
         //外す艦のカウント用変数

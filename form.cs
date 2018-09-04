@@ -15,6 +15,8 @@ partial class form : Form{
     public string csv_file{get{return "csv_file.csv";}}
     //ダメージ判定用フラグ
     int damageRed = 0,damageOrange = 0;
+    //入渠判定フラグ
+    int dockflg = 0;
 
     //要素のクラス宣言とインスタンス化
     Button btn1 = new Button();
