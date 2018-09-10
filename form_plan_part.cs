@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 
 partial class form{
 
@@ -50,6 +51,8 @@ partial class form{
 
         //1艦隊のダメージ確認
         damagejudge();
+        dockcheck();
+
         //1艦隊の補給
         if(color_check()){ run_supplay();}
 
@@ -83,6 +86,80 @@ partial class form{
         home_port_return();
         logwrite("補給完了");
         return flg;
+    }
+
+    ///<summary>
+    ///入渠
+    ///</summary>
+    void dockIn(){
+        //ドックフラグがfalse のときは戻る
+        if(dockflg){return;}
+
+        //ドックの空きフラグ
+        int dockemp = 0;
+        //入渠ドックの判定場所
+        int x = 498;
+        int[] y = {270, 392, 516, 638};
+
+        //艦の状態
+        int kanx = 919;//耐久バー
+        int statasx = 1101;//修復マーク
+        int[] kany = {211, 258, 302, 350};
+
+        //入渠ドック入渠判定 red < 60, green > 180, blue > 180
+        int red = 60, green = 180, blue = 180;
+
+        //色判定式
+        //指定の箇所に 入渠 の色があればfalseを返す
+        Func<string, bool> docksearch = (flgstring) => {
+            string[] tmp = flgstring.Split(',');
+            if( (int.Parse(tmp[0]) < red) && (int.Parse(tmp[1]) > green) && (int.Parse(tmp[2]) > blue)){
+                return false;
+            }
+            return true;
+        };
+        //母港から入渠画面に遷移
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return ;
+        a_non_b_click("入渠_入渠画面", "母港_入渠"); if(stop_flg)return ;
+
+        //ドックの使用判定
+        Task<string> task1 = null, task2 = null, task3 = null, task4 = null;
+        if((damageOrange & 32) > 0){
+            task1 = Task.Run(() => p_hit.bitcolor(x, y[0]));
+        }
+        if((damageOrange & 16) > 0){
+            task2 = Task.Run(() => p_hit.bitcolor(x, y[1]));
+        }
+        if((damageOrange & 8) > 0){
+            task3 = Task.Run(() => p_hit.bitcolor(x, y[2]));
+        }
+        if((damageOrange & 4) > 0){
+            task4 = Task.Run(() => p_hit.bitcolor(x, y[3]));
+        }
+        while(!task4.IsCompleted){Task.Delay(200).Wait();}
+        while(!task3.IsCompleted){Task.Delay(200).Wait();}
+        while(!task2.IsCompleted){Task.Delay(200).Wait();}
+        while(!task1.IsCompleted){Task.Delay(200).Wait();}
+        
+        if(docksearch(task1.Result)){dockemp |= 32;}
+        if(docksearch(task2.Result)){dockemp |= 16;}
+        if(docksearch(task3.Result)){dockemp |= 8;}
+        if(docksearch(task4.Result)){dockemp |= 4;}
+
+        //ドックに空きがないときは戻る
+        if(dockemp == 0){return;}
+
+        //入渠が必要な艦があるか確認する
+        Func<bool> kansearch = () =>{
+            if(!docksearch(p_hit.bitcolor(kanx, kany[0]))){
+
+            }
+        }
+        //入渠ドックをクリック
+        if((dockemp &= 32) > 0){
+            a_non_b_click("入渠_艦船選択", "入渠_ドック1");
+
+        }
     }
 
     //遠征

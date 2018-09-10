@@ -7,16 +7,16 @@ using System.Collections.Generic;
 // form の形状とイベントを記載
 partial class form : Form{
 
-    //停止フラグ
+    ///<summary>停止フラグ</summary>
     bool stop_flg = false;
-    // csvファイルのデータを格納する Dictionary クラスを宣言
+    ///<summary>csvファイルのデータを格納する Dictionary クラスを宣言</summary>
     public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
-    // csvファイル名の設定
+    ///<summary>csvファイル名の設定</summary>
     public string csv_file{get{return "csv_file.csv";}}
-    //ダメージ判定用フラグ
+    ///<summary>ダメージ判定用フラグ</summary>
     int damageRed = 0,damageOrange = 0;
-    //入渠判定フラグ
-    int dockflg = 0;
+    ///<summary>入渠判定フラグ</summary>
+    bool dockflg = false;
 
     //要素のクラス宣言とインスタンス化
     Button btn1 = new Button();

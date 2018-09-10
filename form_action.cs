@@ -11,7 +11,9 @@ partial class form{
     //マウス操作用のクラスを宣言しインスタンス化する
     mouse_class mouse = new mouse_class();
 
-    //画像が一致するれば true を返し、一致しなけらば false を返す
+    ///<summary>
+    ///str の位置の画像が一致すれば true を返し、一致しなければ false を返す
+    ///</summary>
     bool pic_con(string str){
         bool flg = p_hit.pic_con(p_class[str]);
         /*if(flg){
@@ -22,7 +24,9 @@ partial class form{
         return flg;
     }
 
-    //画像を発見すれば true を返し、発見できなければ falseを返す
+    ///<summary>
+    ///str の画像を発見すれば true を返し、発見できなければ falseを返す
+    ///</summary>
     bool pic_search(string str){
         bool flg = p_hit.pic_search(p_class[str]);
         /*if(flg){
@@ -33,11 +37,16 @@ partial class form{
         return flg;
     }
 
+    ///<summary>
+    ///str の位置を一回クリック
+    ///</summary>
     void a_click(string str){
         mouse.before_move_and_click(p_class[str]);
     }
 
-    //画像が消えるまでクリック
+    ///<summary>
+    ///str 画像が消えるまで str をクリック
+    ///</summary>
     void a_del_a_click(string str){
         if(p_class[str] == null){
             stop_flg = true;
@@ -50,8 +59,11 @@ partial class form{
             System.Threading.Thread.Sleep(1500);
         }
     }
-    //str1 がなければ str2 をクリックする
-    //画像が見つからない場合、エラーフラグを立てる
+
+    ///<summary>
+    ///str1 がなければ str2 をクリックする
+    ///画像が見つからない場合、エラーフラグを立てる
+    ///</summary>
     void a_non_b_click(string str1,string str2){
         
         if(p_class[str1] == null || p_class[str2] == null){
@@ -96,7 +108,10 @@ partial class form{
         stop_flg = true;
     }
 
-    //オーバーロード(画面の一部変更検知有) 
+    ///<summary>
+    ///オーバーロード(画面の一部変更検知有) 
+    ///cmp_x, cmp_y の位置の変化をチェック
+    ///</summary>
     void a_non_b_click(string str1,string str2,int cmp_x,int cmp_y){
         //変化比較用画像取得
         pic_data_class cmpclass = new pic_data_class();
@@ -129,7 +144,9 @@ partial class form{
         }
     }
 
-    //オーバーロード str1 の箇所が変化するまで str1 をクリック
+    ///<summary>
+    ///オーバーロード str1 の箇所が変化するまで str1 をクリック
+    ///</summary>
     void a_change_click(string str1){
         if(p_class[str1] == null ){
             stop_flg = true;
@@ -170,7 +187,9 @@ partial class form{
         stop_flg = true;
     }
 
-    //オーバーロード x, y の箇所が変化するまで str1 をクリック
+    ///<summary>
+    ///オーバーロード x, y の箇所(10 * 10 pixel)が変化するまで str1 をクリック
+    ///</summary>
     void a_change_click(string str1, int x, int y){
         if(p_class[str1] == null ){
             stop_flg = true;
@@ -211,7 +230,9 @@ partial class form{
         stop_flg = true;
     }
 
-    //str1 の箇所が変化するまで str2 をクリック
+    ///<summary>
+    ///str1 の箇所が変化するまで str2 をクリック
+    ///</summary>
     void a_change_click(string str1, string str2){
         if(p_class[str1] == null || p_class[str2] == null){
             stop_flg = true;
@@ -253,7 +274,9 @@ partial class form{
         stop_flg = true;
     }
     
-    //str1 & str2 の箇所が変化するまで str3 をクリック
+    ///<summary>
+    ///str1 と str2 の箇所が変化するまで str3 をクリック
+    ///</summary>
     void a_b_change_c_click(string str1, string str2, string str3){
         p_hit.pic_get(p_class[str1]);
         p_hit.pic_get(p_class[str2]) ;
@@ -265,8 +288,9 @@ partial class form{
         stop_flg = true;
     }
 
-    //破損状況の判定(補給画面)
-    //ダメージ判定用フラグ int damageRed,damageOrange
+    ///<summary>破損状況の判定(補給画面)
+    ///ダメージ判定用フラグ int damageRed,damageOrange
+    ///</summary>
     void damagejudge(){
         //ダメージ判定フラグの初期化
         damageRed = 0;
@@ -336,13 +360,13 @@ partial class form{
         if(damageOrange > 0)logwrite("中破以上の艦あり");
     }
 
-    //入渠チェック(補給)
-    //ダメージ判定用フラグ int damageRed,damageOrange
-    //入渠用フラグ int dockflg
+    ///<summary>入渠チェック(補給)
+    ///ダメージ判定用フラグ int damageRed,damageOrange
+    ///入渠用フラグ bool dockflg
+    ///入渠の必要な艦があれば dockflg を true にする
+    ///</summary>
     void dockcheck(){
         if(damageOrange == 0){return;}
-        //dockflg初期化
-        dockflg = 0;
         //入渠中の判定設定色(red < 60, green >180, blue > 190)
         int red = 60, green = 180, blue = 190;
         //判定の場所
@@ -369,41 +393,46 @@ partial class form{
             task6 = Task.Run(() => p_hit.bitcolor30(x, y[5]));
         }
         //艦が入渠中か判定する
-        Action<int, Task<string>> taskcomplete = (bittmp, taskx) =>{
+        //入渠中でなければ dockflg = true
+        Action<Task<string>> taskcomplete = (taskx) =>{
                     while(!taskx.IsCompleted)Task.Delay(1000).Wait();
                     string[] tmp = taskx.Result.Split(',');
                     logwrite(taskx.Result);
-                    if(int.Parse(tmp[0]) < red && int.Parse(tmp[1]) > green && int.Parse(tmp[2]) > blue){
-                        dockflg |= bittmp;
+                    if(int.Parse(tmp[0]) > red && int.Parse(tmp[1]) < green && int.Parse(tmp[2]) < blue){
+                        dockflg = true;
                     } 
         };
         if((damageOrange & 32) > 0){
             while(!task1.IsCompleted){Task.Delay(500).Wait();}
-            taskcomplete(32, task1);
+            taskcomplete(task1);
         }
         if((damageOrange & 16) > 0){
             while(!task2.IsCompleted){Task.Delay(500).Wait();}
-            taskcomplete(16, task2);
+            taskcomplete(task2);
         }
         if((damageOrange & 8) > 0){
             while(!task3.IsCompleted){Task.Delay(500).Wait();}
-            taskcomplete(8, task3);
+            taskcomplete(task3);
         }
         if((damageOrange & 4) > 0){
             while(!task4.IsCompleted){Task.Delay(500).Wait();}
-            taskcomplete(4, task4);
+            taskcomplete(task4);
         }
         if((damageOrange & 2) > 0){
             while(!task5.IsCompleted){Task.Delay(500).Wait();}
-            taskcomplete(2, task5);
+            taskcomplete(task5);
         }
         if((damageOrange & 1) > 0){
             while(!task6.IsCompleted){Task.Delay(500).Wait();}
-            taskcomplete(1, task6);
+            taskcomplete(task6);
         }
     }
 
-    //単艦設定
+    ///<summary>
+    ///単艦設定
+    ///int groupnum 艦隊
+    ///int kannum 艦
+    ///</summary>
     void maketankan(int groupnum, int kannum){
         //外す艦のカウント用変数
         int tmp = kannum;
