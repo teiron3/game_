@@ -97,6 +97,10 @@ partial class form{
 
         //ドックの空きフラグ
         int dockemp = 0;
+        //空きドックの数
+        int dockempcnt = 0;
+        //判定完了フラグ
+        bool kantairyoku = false;
         //入渠ドックの判定場所
         int x = 498;
         int[] y = {270, 392, 516, 638};
@@ -109,10 +113,12 @@ partial class form{
         //入渠ドック入渠判定 red < 60, green > 180, blue > 180
         int red = 60, green = 180, blue = 180;
 
-        //色判定式
+        //色判定式 → 入渠ドッククリックから判定入渠まで変更
         //指定の箇所に 入渠 の色があればfalseを返す
-        Func<string, bool> docksearch = (flgstring) => {
-            string[] tmp = flgstring.Split(',');
+        //5番目の艦が無傷の時は dockflg = false に
+        //上から順に見ていき入渠できる艦を入渠する
+        Func<string, bool> docksearch = (str) => {
+            string[] tmp = str.Split(',');
             if( (int.Parse(tmp[0]) < red) && (int.Parse(tmp[1]) > green) && (int.Parse(tmp[2]) > blue)){
                 return false;
             }
@@ -141,24 +147,71 @@ partial class form{
         while(!task2.IsCompleted){Task.Delay(200).Wait();}
         while(!task1.IsCompleted){Task.Delay(200).Wait();}
         
-        if(docksearch(task1.Result)){dockemp |= 32;}
-        if(docksearch(task2.Result)){dockemp |= 16;}
-        if(docksearch(task3.Result)){dockemp |= 8;}
-        if(docksearch(task4.Result)){dockemp |= 4;}
+        if(docksearch(task1.Result)){dockemp |= 32;dockempcnt++;}
+        if(docksearch(task2.Result)){dockemp |= 16;dockempcnt++;}
+        if(docksearch(task3.Result)){dockemp |= 8;dockempcnt++;}
+        if(docksearch(task4.Result)){dockemp |= 4;dockempcnt++;}
 
-        //ドックに空きがないときは戻る
-        if(dockemp == 0){return;}
+        //ドックが開いている間かつ dockflg = true のとき入渠処理する
+        int bitconst = 32;
+        //選択ドック用変数
+        int selectdock = 1;
+        while((dockempcnt > 0) && dockflg){
+            //ドックが開いているとき
+            if((dockemp &= bitconst) > 0){
+                //未入渠艦のカウント
+                int cnt = 0;
+                //入渠する艦の上からの数
+                int kan = 0;
+                string[] str = new string[0];
+                //艦船選択を開く
+                a_non_b_click("入渠_艦船選択", "入渠_ドック" + selectdock.ToString());
 
-        //入渠が必要な艦があるか確認する
-        Func<bool> kansearch = () =>{
-            if(!docksearch(p_hit.bitcolor(kanx, kany[0]))){
-
+                //耐久バーの確認
+                //入渠対象の場合 cnt++ 最初の対象艦の順番を kan に入力
+                //1st
+                if(int.Parse(p_hit.bitcolor(kanx, kany[0]).Split(',')[0]) > 100){
+                    if(docksearch(p_hit.bitcolor(statasx, kany[0]))){
+                        kan = 1;
+                        cnt++;
+                    }
+                } 
+                //2nd
+                if(int.Parse(p_hit.bitcolor(kanx, kany[1]).Split(',')[0]) > 100){
+                    if(docksearch(p_hit.bitcolor(statasx, kany[1]))){
+                        kan = (kan != 0) ? 2: kan;
+                        cnt++;
+                    }
+                } 
+                //3rd
+                if(int.Parse(p_hit.bitcolor(kanx, kany[2]).Split(',')[0]) > 100){
+                    if(docksearch(p_hit.bitcolor(statasx, kany[2]))){
+                        kan = (kan != 0) ? 3: kan;
+                        cnt++;
+                    }
+                } 
+                //4th
+                if(int.Parse(p_hit.bitcolor(kanx, kany[3]).Split(',')[0]) > 100){
+                    if(docksearch(p_hit.bitcolor(statasx, kany[3]))){
+                        kan = (kan != 0) ? 4: kan;
+                        cnt++;
+                    }
+                } 
+                //5th
+                //dockflg用
+                if(int.Parse(p_hit.bitcolor(kanx, kany[4]).Split(',')[0]) > 100){
+                    cnt++;
+                } 
+                //対象が１以下の場合 dockflg = false
+                dockflg = (cnt <= 1) ? false : true;
+                //もし入渠が必要な艦がなければ抜ける
+                if(cnt == 0){break;}
+                
             }
-        }
-        //入渠ドックをクリック
-        if((dockemp &= 32) > 0){
-            a_non_b_click("入渠_艦船選択", "入渠_ドック1");
-
+            //loop最終処理
+            dockempcnt--;
+            bitconst >>= 1;
+            selectdock++;
         }
     }
 
