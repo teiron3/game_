@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 partial class form{
     //test
     void plantest(){
-        maketankan(1, 4);
-        maketankan(2, 1);
-        maketankan(3, 3);
-        maketankan(4, 2);
-        maketankan(5, 6);
+        dockflg = true;
+        dockIn();
     }
     //1-1ü‰ñ
     void around1_1(){

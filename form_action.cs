@@ -428,6 +428,26 @@ partial class form{
         }
     }
 
+    ///<summary>キラ付け単艦の耐久チェック(補給)
+    ///返り値 bool は true でこの艦のキラ付け終了
+    ///入渠していたとき、中破以上のとき true を返す
+    ///入渠用フラグ bool dockflg
+    ///ダメージがあれば dockflg を true に
+    ///</summary>
+    bool onedockjudge(){
+        //return用変数
+        bool rtn = false;
+        //耐久バーの座標
+        int x = 488;
+        int y = 272;
+        //耐久バーの色
+        int green = 200, blue = 100;
+        //入渠中判定用の座標
+        int dockx = 454;
+        int docky = 277;
+
+    }
+
     ///<summary>
     ///単艦設定
     ///int groupnum 艦隊

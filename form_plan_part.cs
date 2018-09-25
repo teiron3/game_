@@ -90,17 +90,17 @@ partial class form{
 
     ///<summary>
     ///入渠
+    ///破損している艦を入渠する
+    ///(耐久バーの赤の値が 100 以上)
     ///</summary>
     void dockIn(){
         //ドックフラグがfalse のときは戻る
-        if(dockflg){return;}
+        if(!dockflg){return;}
 
         //ドックの空きフラグ
         int dockemp = 0;
         //空きドックの数
         int dockempcnt = 0;
-        //判定完了フラグ
-        bool kantairyoku = false;
         //入渠ドックの判定場所
         int x = 498;
         int[] y = {270, 392, 516, 638};
@@ -108,7 +108,7 @@ partial class form{
         //艦の状態
         int kanx = 919;//耐久バー
         int statasx = 1101;//修復マーク
-        int[] kany = {211, 258, 302, 350};
+        int[] kany = {211, 258, 302, 350, 395};
 
         //入渠ドック入渠判定 red < 60, green > 180, blue > 180
         int red = 60, green = 180, blue = 180;
@@ -130,18 +130,11 @@ partial class form{
 
         //ドックの使用判定
         Task<string> task1 = null, task2 = null, task3 = null, task4 = null;
-        if((damageOrange & 32) > 0){
-            task1 = Task.Run(() => p_hit.bitcolor(x, y[0]));
-        }
-        if((damageOrange & 16) > 0){
-            task2 = Task.Run(() => p_hit.bitcolor(x, y[1]));
-        }
-        if((damageOrange & 8) > 0){
-            task3 = Task.Run(() => p_hit.bitcolor(x, y[2]));
-        }
-        if((damageOrange & 4) > 0){
-            task4 = Task.Run(() => p_hit.bitcolor(x, y[3]));
-        }
+        task1 = Task.Run(() => p_hit.bitcolor(x, y[0]));
+        task2 = Task.Run(() => p_hit.bitcolor(x, y[1]));
+        task3 = Task.Run(() => p_hit.bitcolor(x, y[2]));
+        task4 = Task.Run(() => p_hit.bitcolor(x, y[3]));
+
         while(!task4.IsCompleted){Task.Delay(200).Wait();}
         while(!task3.IsCompleted){Task.Delay(200).Wait();}
         while(!task2.IsCompleted){Task.Delay(200).Wait();}
@@ -158,7 +151,7 @@ partial class form{
         int selectdock = 1;
         while((dockempcnt > 0) && dockflg){
             //ドックが開いているとき
-            if((dockemp &= bitconst) > 0){
+            if((dockemp & bitconst) > 0){
                 //未入渠艦のカウント
                 int cnt = 0;
                 //入渠する艦の上からの数
@@ -206,13 +199,21 @@ partial class form{
                 dockflg = (cnt <= 1) ? false : true;
                 //もし入渠が必要な艦がなければ抜ける
                 if(cnt == 0){break;}
-                
+
+                //入渠させる
+                a_non_b_click("入渠_入渠開始","入渠_艦船" + kan.ToString());
+                a_non_b_click("入渠_はい", "入渠_入渠開始");
+                a_change_click("入渠_はい");
+
+                Task.Delay(1000).Wait();
             }
             //loop最終処理
             dockempcnt--;
             bitconst >>= 1;
             selectdock++;
         }
+        //母港に戻る
+        a_non_b_click("母港_出撃", "母港_母港");
     }
 
     //遠征
