@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 partial class form{
 
-    //メソッド supply 母港画面からの補給
-    //戻り値は遠征の判定用
-    byte supply(){
+    ///<summary>母港画面からの補給</summary>
+    ///<param name="oneop">ワンオペ かどうか。損壊判定用</param>
+    ///<returns>byte 遠征の判定用</returns>
+    ///<returns>bool continuflg</returns>
+    ///<remarks>第1艦隊の補給画面で損壊を確認</remarks>
+    ///<remarks>第2～4艦隊で補給の有無で戻り値の遠征判定を設定</remarks>
+    byte supply(bool oneop){
         //遠征判定用戻り値 byte変数の設定
         byte flg = 0;
         //要補給かどうかの判定場所
@@ -50,8 +54,15 @@ partial class form{
         a_non_b_click("補給_燃料", "母港_補給"); if(stop_flg)return flg;
 
         //1艦隊のダメージ確認
-        damagejudge();
-        dockcheck();
+        //oneop == true のときは一艦のみ
+        //oneope == false のときは6艦見る
+        if(oneop){
+            continueflg = onedockjudge();
+
+        }else{
+            damagejudge();
+            dockcheck();
+        }
 
         //1艦隊の補給
         if(color_check()){ run_supplay();}
@@ -88,11 +99,12 @@ partial class form{
         return flg;
     }
 
-    ///<summary>
-    ///入渠
-    ///破損している艦を入渠する
-    ///(耐久バーの赤の値が 100 以上)
-    ///</summary>
+    ///<summary>入渠</summary>
+    ///<param>なし</param>
+    ///<returns>なし</returns>
+    ///<remarks>破損している艦を入渠する</remarks>
+    ///<remarks>(耐久バーの赤の値が 100 以上)</remarks>
+    ///<remarks>dockflg == false のときは抜ける</remarks>
     void dockIn(){
         //ドックフラグがfalse のときは戻る
         if(!dockflg){return;}
@@ -216,8 +228,11 @@ partial class form{
         a_non_b_click("母港_出撃", "母港_母港");
     }
 
-    //遠征
-    void expedition(){
+    ///<summary>遠征</summary>
+    ///<param name="oneop">キラ付け等ワンオペのとき true</param>
+    ///<returns>なし</returns>
+    ///<remarks>補給して遠征の有無を確認</remarks>
+    void expedition(bool oneop){
         //遠征艦隊フラグ
         byte flg = 0;
         //母港から出撃画面に遷移するときの画像比較場所
@@ -225,7 +240,7 @@ partial class form{
         int portchangeY = 500;
 
         //補給し、遠征艦隊の確認
-        flg = supply();
+        flg = supply(oneop);
         //遠征艦隊が母港に戻ってなかったら抜ける
         if(flg == 0)return;
 
@@ -298,7 +313,8 @@ partial class form{
         a_non_b_click("母港_出撃", "母港_母港");
     }
 
-    //1-1出撃
+    ///<summary>1-1出撃</summary>
+    ///<remarks>1回出撃</remarks>
     void Fielde1_1(){
         //母港→出撃画面の遷移確認場所
         int portchangeX = 580; int portchangeY = 500;
@@ -350,5 +366,21 @@ partial class form{
             logwrite(dcnt.ToString());
             dcnt++;
         }while(!pic_con("母港_出撃"));
+    }
+
+    ///<summary>耐久の確認(母港→補給)</summary>
+    ///<returns>bool continueflg に入力</returns>
+    ///<remarks>単艦で艦の周回継続を確認する</remarks>
+    ///<remarks>主に変更直後に使用</remarks>
+    void onejudge(){
+        //動作開始
+        //母港から補給画面に遷移
+        a_non_b_click("母港_出撃", "母港_母港"); if(stop_flg)return ;
+        a_non_b_click("補給_燃料", "母港_補給"); if(stop_flg)return ;
+        //艦の確認
+        continueflg = onedockjudge();
+        
+        //母港に戻る
+        a_non_b_click("母港_出撃", "母港_母港");
     }
 }

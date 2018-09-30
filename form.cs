@@ -4,19 +4,29 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-// form の形状とイベントを記載
+///<summary>form の形状とイベントを記載</summary>
 partial class form : Form{
 
     ///<summary>停止フラグ</summary>
     bool stop_flg = false;
-    ///<summary>csvファイルのデータを格納する Dictionary クラスを宣言</summary>
+    
+    ///<summary>csvファイルのデータを格納する</summary>
+    ///<remarks>Dictionary クラスを宣言</remarks>
     public Dictionary<string, pic_data_class> p_class = new Dictionary<string, pic_data_class>();
+
     ///<summary>csvファイル名の設定</summary>
     public string csv_file{get{return "csv_file.csv";}}
+
     ///<summary>ダメージ判定用フラグ</summary>
     int damageRed = 0,damageOrange = 0;
+
     ///<summary>入渠判定フラグ</summary>
+    ///<remarks>true のときに入渠</remarks>
     bool dockflg = false;
+
+    ///<summary>戦闘海域周回継続かどうかのフラグ</summary>
+    ///<remarks>true で継続終了</remarks>
+    bool continueflg = false;
 
     //要素のクラス宣言とインスタンス化
     Button btn1 = new Button();
@@ -27,7 +37,7 @@ partial class form : Form{
     RadioButton rbtn3 = new RadioButton();
     RadioButton rbtn4 = new RadioButton();
 
-    //コントラクタ(形状の設定)
+    ///<summary>コントラクタ(形状の設定)</summary>
     public form(){
         // formの大きさとタイトルを設定
         this.Text = "game manupirate";

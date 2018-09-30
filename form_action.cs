@@ -5,15 +5,16 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 
 partial class form{
-    //画像判定処理用のクラスを宣言しインスタンス化する
+    //画像判定処理用のクラスを宣言しインスタンス
     pic_hit p_hit = new pic_hit();
 
     //マウス操作用のクラスを宣言しインスタンス化する
     mouse_class mouse = new mouse_class();
 
-    ///<summary>
-    ///str の位置の画像が一致すれば true を返し、一致しなければ false を返す
-    ///</summary>
+    ///<summary>画像の判定</summary>
+    ///<param name="str">csvファイルから読み込んだ判定用クラス</param>
+    ///<returns>bool 画像が一致すれば true</returns>
+    ///<remarks>str の位置の画像が一致すれば true を返し、一致しなければ false を返す</remarks>
     bool pic_con(string str){
         bool flg = p_hit.pic_con(p_class[str]);
         /*if(flg){
@@ -24,9 +25,10 @@ partial class form{
         return flg;
     }
 
-    ///<summary>
-    ///str の画像を発見すれば true を返し、発見できなければ falseを返す
-    ///</summary>
+    ///<summary>画面内の画像の判定</summary>
+    ///<param name="str">csvファイルから読み込んだ判定用クラス</param>
+    ///<remarks>str の画像を発見すれば true を返し、発見できなければ falseを返す</remarks>
+    ///<remarks>改造の余地あり。使っていない</remarks>
     bool pic_search(string str){
         bool flg = p_hit.pic_search(p_class[str]);
         /*if(flg){
@@ -37,16 +39,18 @@ partial class form{
         return flg;
     }
 
-    ///<summary>
-    ///str の位置を一回クリック
-    ///</summary>
+    ///<summary>一回クリック</summary>
+    ///<param name="str">csvファイルから読み込んだ判定用クラス</param>
+    ///<returns>なし</returns>
+    ///<remarks>str の位置を一回クリック</remarks>
     void a_click(string str){
         mouse.before_move_and_click(p_class[str]);
     }
 
-    ///<summary>
-    ///str 画像が消えるまで str をクリック
-    ///</summary>
+    ///<summary> str 画像が消えるまで str をクリック </summary>
+    ///<param name="str">csvファイルから読み込んだ判定用クラス</param>
+    ///<returns>なし</returns>
+    ///<remarks>strの画像が消えるまでstrをクリックする</remarks>
     void a_del_a_click(string str){
         if(p_class[str] == null){
             stop_flg = true;
@@ -60,10 +64,10 @@ partial class form{
         }
     }
 
-    ///<summary>
-    ///str1 がなければ str2 をクリックする
-    ///画像が見つからない場合、エラーフラグを立てる
-    ///</summary>
+    ///<summary> str1 がなければ str2 をクリックする </summary>
+    ///<param name="str1">画像の判定用クラス</param>
+    ///<param name="str2">クリックする場所の判定用クラス</param>
+    ///<remarks>画像が見つからない場合、エラーフラグを立てる</remarks>
     void a_non_b_click(string str1,string str2){
         
         if(p_class[str1] == null || p_class[str2] == null){
@@ -108,10 +112,13 @@ partial class form{
         stop_flg = true;
     }
 
-    ///<summary>
-    ///オーバーロード(画面の一部変更検知有) 
-    ///cmp_x, cmp_y の位置の変化をチェック
-    ///</summary>
+    ///<summary> str1 がなければ str2 をクリックする 一部場所チェック付 </summary>
+    ///<param name="str1">画像の判定用クラス</param>
+    ///<param name="str2">クリックする場所の判定用クラス</param>
+    ///<param name="cmp_x">画像の判定場所 X座標</param>
+    ///<param name="cmp_y">画像の判定場所 y座標</param>
+    ///<remarks>str1 の画像がなければ str2 をクリック</remarks>
+    ///<remarks>cmp_x,cmp_yの箇所が変化しなければディレイをかける</remarks>
     void a_non_b_click(string str1,string str2,int cmp_x,int cmp_y){
         //変化比較用画像取得
         pic_data_class cmpclass = new pic_data_class();
@@ -144,9 +151,9 @@ partial class form{
         }
     }
 
-    ///<summary>
-    ///オーバーロード str1 の箇所が変化するまで str1 をクリック
-    ///</summary>
+    ///<summary> str1 の箇所が変化するまで str1 をクリック </summary>
+    ///<param name="str1">判定用クラス</param>
+    ///<remarks>str1 の箇所が変化するまで str1 をクリック</remarks>
     void a_change_click(string str1){
         if(p_class[str1] == null ){
             stop_flg = true;
@@ -187,9 +194,11 @@ partial class form{
         stop_flg = true;
     }
 
-    ///<summary>
-    ///オーバーロード x, y の箇所(10 * 10 pixel)が変化するまで str1 をクリック
-    ///</summary>
+    ///<summary> x, y の箇所(10 * 10 pixel)が変化するまで str1 をクリック </summary>
+    ///<param name="str1">クリックする場所の判定用クラス</param>
+    ///<param name="x">画像の判定場所 X座標</param>
+    ///<param name="y">画像の判定場所 y座標</param>
+    ///<remarks>x,y の箇所が変化するまで str1 をクリック</remarks>
     void a_change_click(string str1, int x, int y){
         if(p_class[str1] == null ){
             stop_flg = true;
@@ -230,9 +239,10 @@ partial class form{
         stop_flg = true;
     }
 
-    ///<summary>
-    ///str1 の箇所が変化するまで str2 をクリック
-    ///</summary>
+    ///<summary> str1 の箇所が変化するまで str2 をクリック </summary>
+    ///<param name="str1">クリックする場所の判定用クラス</param>
+    ///<param name="str2">判定する場所の判定用クラス x,yを使用</param>
+    ///<remarks>str2.x .y の箇所が変化するまで str1 をクリック</remarks>
     void a_change_click(string str1, string str2){
         if(p_class[str1] == null || p_class[str2] == null){
             stop_flg = true;
@@ -274,9 +284,13 @@ partial class form{
         stop_flg = true;
     }
     
-    ///<summary>
-    ///str1 と str2 の箇所が変化するまで str3 をクリック
-    ///</summary>
+    ///<summary> str1 と str2 の箇所が変化するまで str3 をクリック </summary>
+    ///<param name="str1">判定する場所の判定用クラス picx,yを使用</param>
+    ///<param name="str2">判定する場所の判定用クラス picx,yを使用</param>
+    ///<param name="str3">クリックする場所の判定用クラス</param>
+    ///<remarks>str1 と str2 の箇所が変化するまで str3 をクリック</remarks>
+    ///<remarks>str1 と str2 の箇所の画像を取得して判定</remarks>
+    ///<remarks>x,yを使用するように改造の余地あり</remarks>
     void a_b_change_c_click(string str1, string str2, string str3){
         p_hit.pic_get(p_class[str1]);
         p_hit.pic_get(p_class[str2]) ;
@@ -288,9 +302,12 @@ partial class form{
         stop_flg = true;
     }
 
-    ///<summary>破損状況の判定(補給画面)
-    ///ダメージ判定用フラグ int damageRed,damageOrange
-    ///</summary>
+    ///<summary>破損状況の判定(補給画面)</summary>
+    ///<param>なし</param>
+    ///<returns>int damageRed と int damageOrenge に結果を入力。戻り値はなし</returns>
+    ///<remarks>補給画面でダメージを判定する</remarks>
+    ///<remarks>選択中の艦隊の耐久バーの色を判定</remarks>
+    ///<remarks>判定は煙を考えて数回</remarks>
     void damagejudge(){
         //ダメージ判定フラグの初期化
         damageRed = 0;
@@ -360,11 +377,11 @@ partial class form{
         if(damageOrange > 0)logwrite("中破以上の艦あり");
     }
 
-    ///<summary>入渠チェック(補給)
-    ///ダメージ判定用フラグ int damageRed,damageOrange
-    ///入渠用フラグ bool dockflg
-    ///入渠の必要な艦があれば dockflg を true にする
-    ///</summary>
+    ///<summary>入渠チェック(補給)</summary>
+    ///<param>なし</param>
+    ///<returns>bool dockflg に結果を入力</returns>
+    ///<remarks>ダメージ判定用フラグ int damageRed,damageOrange を使用</remarks>
+    ///<remarks>入渠の必要な艦があれば dockflg を true にする</remarks>
     void dockcheck(){
         if(damageOrange == 0){return;}
         //入渠中の判定設定色(red < 60, green >180, blue > 190)
@@ -428,31 +445,42 @@ partial class form{
         }
     }
 
-    ///<summary>キラ付け単艦の耐久チェック(補給)
-    ///返り値 bool は true でこの艦のキラ付け終了
-    ///入渠していたとき、中破以上のとき true を返す
-    ///入渠用フラグ bool dockflg
-    ///ダメージがあれば dockflg を true に
-    ///</summary>
+    ///<summary>キラ付け単艦の耐久チェック(補給)</summary>
+    ///<param>なし</param>
+    ///<returns>bool 艦に入渠処置が必要であるなら true</returns>
+    ///<remarks>入渠していたとき、中破以上のとき true を返す</remarks>
+    ///<remarks>ダメージがあれば dockflg を true に</remarks>
     bool onedockjudge(){
-        //return用変数
-        bool rtn = false;
         //耐久バーの座標
         int x = 488;
         int y = 272;
-        //耐久バーの色
-        int green = 200, blue = 100;
         //入渠中判定用の座標
         int dockx = 454;
         int docky = 277;
+        //耐久バーの色取得
+        string[] tmp = p_hit.bitcolor(x, y).Split(',');
+        //破損があれば dockflg = true
+        if(int.Parse(tmp[0]) >= 100){
+            dockflg = true;
+        }
+        //中破判定
+        if((int.Parse(tmp[1]) < 200) ||(int.Parse(tmp[2]) > 100)){
+            return true;
+        }
+        //入渠判定
+        tmp = p_hit.bitcolor(dockx, docky).Split(',');
+        if((int.Parse(tmp[0]) < 60) & (int.Parse(tmp[1]) > 180) & (int.Parse(tmp[2]) > 180)){
+            return true;
+        }
 
+        return false;
     }
 
-    ///<summary>
-    ///単艦設定
-    ///int groupnum 艦隊
-    ///int kannum 艦
-    ///</summary>
+    ///<summary>単艦設定</summary>
+    ///<param name="groupnum">艦隊</param>
+    ///<param name="kannum">艦</param>
+    ///<returns>なし</returns>
+    ///<remarks>艦を単艦配置する</remarks>
     void maketankan(int groupnum, int kannum){
         //外す艦のカウント用変数
         int tmp = kannum;
