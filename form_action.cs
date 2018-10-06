@@ -345,22 +345,16 @@ partial class form{
         };
         Task<string> task1, task2, task3, task4, task5, task6;
         task1 = Task.Run(() => p_hit.bitcolor30(x, y[0]));
-        logwrite("1");
         if(cnt > 1){
              task2 = Task.Run( () => p_hit.bitcolor30(x, y[1]));
-        logwrite("2");
             if(cnt > 2){
                 task3 = Task.Run( () => p_hit.bitcolor30(x, y[2]));
-        logwrite("3");
                 if(cnt > 3){
                     task4 = Task.Run( () => p_hit.bitcolor30(x, y[3]));
-        logwrite("4");
                     if(cnt > 4){
                         task5 = Task.Run( () => p_hit.bitcolor30(x, y[4]));
-        logwrite("5");
                         if(cnt > 5){
                             task6 = Task.Run( () => p_hit.bitcolor30(x, y[5]));
-        logwrite("6");
                             taskcomplete(1, task6);
                         }
                         taskcomplete(2, task5);

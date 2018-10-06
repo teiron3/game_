@@ -9,15 +9,15 @@ partial class form{
 
     ///<summary>test用</summary>
     void plantest(){
-        kirakan(1);
-        expendjitiononly();
+        dockflg = true;
+        dockIn();
     }
 
-    ///<summary>1-1周回</summary>
+    ///<summary>1-1周回(キラ付け)</summary>
     ///<remarks>1-1 → 遠征</remarks>
     void around1_1(){
-        Fielde1_1();if(stop_flg)return;
-        expedition(true);
+        kirakan(gkantai, garoundcnt);if(stop_flg)return;
+        expendjitiononly();
     }
 
     ///<summary>遠征のみ</summary>
@@ -48,11 +48,14 @@ partial class form{
 
     ///<summary>キラ付け</summary>
     ///<param name="kantai">艦隊数</param>
+    ///<param name="aroundcnt">周回数</param>
     ///<remarks>キラ付け1-1周回</remarks>
     ///<remarks>kantai は保存されている艦隊いくつやるかの数</remarks>
-    void kirakan(int kantai){
+    void kirakan(int kantai, int aroundcnt){
         //kantai の数制限(error 防止)
         kantai = (kantai > 5) ? 5 : kantai;
+        //aroundcnt の数の制限(キラの性質上3 以下に設定する)
+        aroundcnt = (aroundcnt > 3) ? 3 : aroundcnt;
 
         //キラ付けループ
         //引数 kantai 以下の回数ループ
@@ -60,16 +63,31 @@ partial class form{
             //kancnt キラ付けを行う艦
             for(int kancnt = 1; kancnt <= 6; kancnt++){
                 
-                maketankan(kantaicnt, kancnt);if(stop_flg){return;}
+                while(true){
+                    //stop_flg == true の時はフラグをリセットして最初から
+                    //if(stop_flg){stop_flg = false;continue;}
+
+                    //単艦設定
+                    maketankan(kantaicnt, kancnt);if(stop_flg){stop_flg = false;continue;}
+                    onejudge();if(stop_flg){stop_flg = false;continue;}
+                    break;
+                }
                 //変更した艦が周回に出せない状態の時はスキップ
-                onejudge();if(stop_flg){return;}
                 if(continueflg){
                     continueflg = false;
                     continue;
                 }
-                for(int cnt = 1; cnt <= 3; cnt++){
-                    Fielde1_1();if(stop_flg){return;}
-                    expedition(true);if(stop_flg){return;}
+                for(int cnt = 1; cnt <= aroundcnt; cnt++){
+                    while(true){
+                        Fielde1_1();if(stop_flg){stop_flg = false;continue;}
+                        expedition(true);if(stop_flg){stop_flg = false;continue;}
+                        break;
+                    }
+                    //中破以上のときは次にいく
+                    if(continueflg){
+                        continueflg = false;
+                        break;
+                    }
                 }
                 dockIn();
             }

@@ -152,10 +152,26 @@ partial class form{
         while(!task2.IsCompleted){Task.Delay(200).Wait();}
         while(!task1.IsCompleted){Task.Delay(200).Wait();}
         
-        if(docksearch(task1.Result)){dockemp |= 32;dockempcnt++;}
-        if(docksearch(task2.Result)){dockemp |= 16;dockempcnt++;}
-        if(docksearch(task3.Result)){dockemp |= 8;dockempcnt++;}
-        if(docksearch(task4.Result)){dockemp |= 4;dockempcnt++;}
+        if(docksearch(task1.Result)){
+            dockemp |= 32;
+            dockempcnt++;
+            logwrite("dock1");
+        }
+        if(docksearch(task2.Result)){
+            dockemp |= 16;
+            dockempcnt++;
+            logwrite("dock2");
+        }
+        if(docksearch(task3.Result)){
+            dockemp |= 8;
+            dockempcnt++;
+            logwrite("dock3");
+        }
+        if(docksearch(task4.Result)){
+            dockemp |= 4;
+            dockempcnt++;
+            logwrite("dock4");
+        }
 
         //ドックが開いている間かつ dockflg = true のとき入渠処理する
         int bitconst = 32;
@@ -179,27 +195,35 @@ partial class form{
                     if(docksearch(p_hit.bitcolor(statasx, kany[0]))){
                         kan = 1;
                         cnt++;
+                        //debug
+                        logwrite("1入渠対象");
                     }
                 } 
                 //2nd
                 if(int.Parse(p_hit.bitcolor(kanx, kany[1]).Split(',')[0]) > 100){
                     if(docksearch(p_hit.bitcolor(statasx, kany[1]))){
-                        kan = (kan != 0) ? 2: kan;
+                        kan = (kan == 0) ? 2: kan;
                         cnt++;
+                        //debug
+                        logwrite("2入渠対象");
                     }
                 } 
                 //3rd
                 if(int.Parse(p_hit.bitcolor(kanx, kany[2]).Split(',')[0]) > 100){
                     if(docksearch(p_hit.bitcolor(statasx, kany[2]))){
-                        kan = (kan != 0) ? 3: kan;
+                        kan = (kan == 0) ? 3: kan;
                         cnt++;
+                        //debug
+                        logwrite("3入渠対象");
                     }
                 } 
                 //4th
                 if(int.Parse(p_hit.bitcolor(kanx, kany[3]).Split(',')[0]) > 100){
                     if(docksearch(p_hit.bitcolor(statasx, kany[3]))){
-                        kan = (kan != 0) ? 4: kan;
+                        kan = (kan == 0) ? 4: kan;
                         cnt++;
+                        //debug
+                        logwrite("4入渠対象");
                     }
                 } 
                 //5th
@@ -211,6 +235,11 @@ partial class form{
                 dockflg = (cnt <= 1) ? false : true;
                 //もし入渠が必要な艦がなければ抜ける
                 if(cnt == 0){break;}
+                //kan == 0 のとき抜ける。画面エラーの可能性あり
+                if(kan == 0){
+                    logwrite("kan == 0 画面読み取りエラーの可能性あり");
+                    break;
+                }
 
                 //入渠させる
                 a_non_b_click("入渠_入渠開始","入渠_艦船" + kan.ToString());
@@ -218,9 +247,9 @@ partial class form{
                 a_change_click("入渠_はい");
 
                 Task.Delay(1000).Wait();
+                dockempcnt--;
             }
             //loop最終処理
-            dockempcnt--;
             bitconst >>= 1;
             selectdock++;
         }
@@ -363,7 +392,6 @@ partial class form{
             }
 
             if(stop_flg)return;
-            logwrite(dcnt.ToString());
             dcnt++;
         }while(!pic_con("母港_出撃"));
     }
