@@ -20,6 +20,15 @@ partial class form{
         expendjitiononly();
     }
 
+    ///<summary>1-1ü‰ñ‚Ì‚İ</summary>
+    ///<remarks>‰“ª‚È‚µŠÍ‘à•Ò¬‚È‚µ</remarks>
+    ///•ÒW“r’†
+    void around1_1only(){
+        for(int cnt = 0; cnt <= garoundcnt; cnt++){
+
+        }
+    }
+
     ///<summary>‰“ª‚Ì‚İ</summary>
     ///<remarks>‰“ªŒã‚Éˆê’èŠÔ~‚Ü‚é</remarks>
     void expendjitiononly(){

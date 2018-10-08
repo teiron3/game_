@@ -204,6 +204,11 @@ partial class form : Form{
             return;
         }
          */
+
+        //–¢‘I‘ğ‚ÌI—¹ˆ—
+        btn1.Enabled = true;
+        stop_flg = false;
+        return;
         
     }
 
